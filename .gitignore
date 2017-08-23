@@ -1,0 +1,47 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+*.egg
+*.egg-info/
+.Python
+.eggs/
+.installed.cfg
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+env/
+instance/
+lib/
+lib64/
+migrations/
+parts/
+sdist/
+static/
+var/
+uzbl.sh
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Sphinx documentation
+docs/_build/
+
+# Config file
+config.env

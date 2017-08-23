@@ -1,0 +1,45 @@
+{
+    "_meta": {
+        "hash": {
+            "sha256": "19151e83667e4047ce81930c5cd512d2656f29f594874012ef69a4cf84a721c0"
+        },
+        "requires": {},
+        "sources": [
+            {
+                "url": "https://pypi.python.org/simple",
+                "verify_ssl": true
+            }
+        ]
+    },
+    "default": {
+        "django": {
+            "version": "==1.11.4"
+        },
+        "psycopg2": {
+            "version": "==2.7.3"
+        },
+        "pytz": {
+            "version": "==2017.2"
+        }
+    },
+    "develop": {
+        "autopep8": {
+            "version": "==1.3.2"
+        },
+        "django": {
+            "version": "==1.11.4"
+        },
+        "django-debug-toolbar": {
+            "version": "==1.8"
+        },
+        "pycodestyle": {
+            "version": "==2.3.1"
+        },
+        "pytz": {
+            "version": "==2017.2"
+        },
+        "sqlparse": {
+            "version": "==0.2.3"
+        }
+    }
+}

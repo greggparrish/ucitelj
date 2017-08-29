@@ -1,4 +1,3 @@
-
 from .base import *
 
 DEBUG = True
@@ -20,7 +19,8 @@ CACHES = {
 }
 INSTALLED_APPS += (
     'debug_toolbar',
-    'livereload'
+    'livereload',
+    'sass_processor'
 )
 MIDDLEWARE += (
     'debug_toolbar.middleware.DebugToolbarMiddleware',

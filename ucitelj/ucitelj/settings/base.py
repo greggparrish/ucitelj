@@ -25,12 +25,16 @@ DJANGO_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
-    ]
+    'bootstrap3',
+    'easy_thumbnails',
+]
 
 LOCAL_APPS = [
+    'apps.articles',
+    'apps.base',
     'apps.feeds',
-    'apps.words',
-    ]
+    'apps.words'
+]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -99,17 +103,21 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'Europe/Zagreb'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
-
 STATIC_URL = '/static/'
+STATICFILES_DIRS = ('static',)
+
+
+# EASY-THUMBNAILS SETTINGS
+THUMBNAIL_ALIASES = {
+    '': {
+        'square': {'size': (250, 250), 'crop': 'smart'},
+    },
+}

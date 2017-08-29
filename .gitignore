@@ -22,6 +22,7 @@ instance/
 lib/
 lib64/
 migrations/
+node_modules/
 parts/
 sdist/
 static/

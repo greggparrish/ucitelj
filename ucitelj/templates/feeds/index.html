@@ -5,10 +5,10 @@
 	{% if feed_list %}
     <div class='container'>
 			{% for feed in feed_list %}
-        <div class='col-xs-12 col-lg-2'>
+        <div class='col-xs-2'>
           <img src="/{{ feed.logo| thumbnail_url:'square'}}" />
         </div>
-        <div class='col-xs-12 col-lg-2'>
+        <div class='col-xs-10'>
 			  <a href="/feeds/{{ feed.slug }}/">{{ feed.name }}</a>
         </div>
 			{% endfor %}

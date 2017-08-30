@@ -7,8 +7,15 @@
 			<meta charset="utf-8">
 			<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge" /><![endif]-->
 			<meta name="viewport" content="width=device-width, initial-scale=1">
-			<title>{% block title %}FUCITELJ{% endblock %}</title>
+      <meta name="description" content="{% block meta_description %}{% endblock %}">
+      <meta name="author" content="{% block meta_author %}{% endblock %}">
+
+      <link rel="icon" type="image/png" href="{% static 'img/favicon.ico' %}" />
+
+			<title>{% block title %}UCITELJ{% endblock %}</title>
 			{% bootstrap_css %}
+      <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
 		  {% block extra_css %}{% endblock %}
       <script src="{% static "js/jquery-3.2.1.min.js" %}"></script>
 	</head>

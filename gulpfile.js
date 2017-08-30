@@ -31,9 +31,8 @@ gulp.task('uglify', function() {
 gulp.task('watch', function(){
     livereload.listen();
     gulp.watch(['./ucitelj/assets/sass/*/*.scss', './assets/sass/**/*.scss'], ['sass']);
-    gulp.watch('./ucitelj/templates/*/*.html', );
     gulp.watch('./ucitelj/assets/js/*.js', ['uglify']);
-    gulp.watch(['./ucitelj/static/css/style.css', './*.php', './js/*.js'], function (files){
+    gulp.watch(['./ucitelj/static/css/style.css', './ucitelj/templates/*/*.html', './js/*.js'], function (files){
         livereload.changed(files)
     });
 });

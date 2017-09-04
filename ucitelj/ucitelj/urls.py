@@ -12,7 +12,7 @@ urlpatterns = [
 
     url(r'^/', include('apps.feeds.urls')),
 
-    url(r'^articles/', include('apps.feeds.urls')),
+    url(r'^articles/', include('apps.articles.urls')),
     url(r'^feeds/', include('apps.feeds.urls')),
     url(r'^words/', include('apps.feeds.urls')),
 ]

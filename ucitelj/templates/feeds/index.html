@@ -1,19 +1,41 @@
-{% extends "layouts/base.html" %}
-
+{% extends "feeds/feedbase.html" %}
 {% load thumbnail %}
-{% block content %}
-	{% if feed_list %}
-    <div class='container'>
-			{% for feed in feed_list %}
-        <div class='col-xs-2'>
-          <img src="/{{ feed.logo| thumbnail_url:'square'}}" />
-        </div>
-        <div class='col-xs-10'>
-			  <a href="/feeds/{{ feed.slug }}/">{{ feed.name }}</a>
-        </div>
-			{% endfor %}
-    </div>
-	{% else %}
-			<p>No feeds are available.</p>
-	{% endif %}
+
+{% block feedcontent %}
+  <div id='feedlist'>
+    {% if feed_list %}
+      <div class='container'>
+        {% for feed in feed_list %}
+        <div class='feed-item col-xs-12 {{feed.get_feedtype_display}}'>
+            <div class='col-xs-2'>
+              <a href="/feeds/{{ feed.slug }}/">
+                <img src="/{{ feed.logo| thumbnail_url:'square'}}" />
+              </a>
+            </div>
+            <div class='col-xs-10'>
+                <button class='subButton btn {% if feed.id in user_subs %}subbed{%endif%}' data-feed='{{ feed.id }}' data-sub='{% if feed.id in user_subs %}unsub{% else %}sub{%endif%}' type='button'></button>
+                <h2 class='feed-title'>
+							    <a href="/feeds/{{ feed.slug }}/">{{ feed.name }}</a>
+                </h2>
+              <p class='about-feed'>{{ feed.about }}</p>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+        <p>No feeds are available.</p>
+    {% endif %}
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+  <script>
+    $(".subButton").click(function () {
+			var feed_id = $(this).attr("data-feed");
+			var sub_type  = $(this).attr("data-sub");
+			$.get('subscriptions/', {feed_id : feed_id, sub_type : sub_type}, function(data){ });
+			$(this).toggleClass('subbed');
+			return false;
+    });
+  </script>
 {% endblock %}

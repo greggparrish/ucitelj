@@ -1,0 +1,18 @@
+{% extends "layouts/base.html" %}
+{% load thumbnail %}
+{% block content %}
+	{% if article %}
+    <div class='container'>
+      <h1>
+        {{ article.title }}
+      </h1>
+      <a href='{{article.url}}' target='_blank'>original article</a>
+      <hr />
+      <p>{{article.article_text}}</p>
+    </div>
+	{% else %}
+			<p>Article unavailable.</p>
+	{% endif %}
+{% endblock %}
+
+

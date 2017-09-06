@@ -8,8 +8,8 @@ from django.template import loader
 
 
 from ..feeds.models import Feed, Subscription
-from .models import Article
-from .get_articles import update_articles
+from .models import Article, ArticleText
+from .get_articles import update_articles, get_article_content
 
 
 def index(request):
@@ -48,9 +48,20 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 def detail(request, slug):
+    '''
+    get article, text if exists, if not, feed article id, permalink,
+    and body tag containing main text to get_article_contenti, save, render
+    '''
     article = get_object_or_404(Article, slug=slug)
+    try:
+      at = ArticleText.objects.get(article_id=article.id)
+    except:
+      at = get_article_content(article.id, article.permalink)
+
+
     context = {
         'article' : article,
+        'at' : at,
     }
     template = loader.get_template('articles/show.html')
     return HttpResponse(template.render(context,request))

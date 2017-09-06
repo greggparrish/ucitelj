@@ -1,10 +1,15 @@
 import os
-import calendar
 from datetime import datetime
-from time import mktime
-import psycopg2
-import feedparser
+import re
+
+from bs4 import BeautifulSoup
 from slugify import slugify
+from time import mktime
+import calendar
+import feedparser
+import psycopg2
+import requests
+
 
 def update_articles(feeds=None):
     '''  update articles '''
@@ -42,3 +47,9 @@ def update_articles(feeds=None):
                  slug))
         conn.commit()
     conn.close()
+
+def get_article_content(aid, url):
+    r = requests.get(url)
+    soup = BeautifulSoup(r.content, 'lxml')
+    cleaned_article = soup.get_text()
+    return cleaned_article

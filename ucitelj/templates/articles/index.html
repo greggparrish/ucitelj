@@ -1,6 +1,5 @@
 {% extends "articles/articlebase.html" %}
 {% load thumbnail %}
-
 {% block articlecontent %}
     {% regroup articles by feed_id as feed_list %} 
     {% for feed in feed_list %}

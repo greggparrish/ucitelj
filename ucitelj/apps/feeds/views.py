@@ -5,6 +5,7 @@ from django.template import loader
 
 
 from .models import Feed, Subscription
+from ..articles.models import Article
 
 
 def index(request):
@@ -19,8 +20,10 @@ def index(request):
 
 def detail(request, slug):
     feed = get_object_or_404(Feed, slug=slug)
+    articles = Article.objects.filter(feed_id=feed.id)
     context = {
         'feed' : feed,
+        'articles' : articles,
     }
     template = loader.get_template('feeds/show.html')
     return HttpResponse(template.render(context,request))

@@ -1,4 +1,4 @@
-{% extends "layouts/base.html" %}
+{% extends "articles/articlebase.html" %}
 {% load thumbnail %}
 {% block content %}
 	{% if article %}
@@ -6,9 +6,11 @@
       <h1>
         {{ article.title }}
       </h1>
-      <a href='{{article.url}}' target='_blank'>original article</a>
+      <p>From: <a href='/feeds/{{ article.feed.slug }}'>{{ article.feed.name }}</a></p>
+      <a href='{{article.permalink}}' target='_blank'>original article</a>
       <hr />
       <p>{{article.article_text}}</p>
+      {{ at }}
     </div>
 	{% else %}
 			<p>Article unavailable.</p>

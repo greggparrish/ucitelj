@@ -21,6 +21,7 @@ class Feed(models.Model):
     about = models.TextField()
     rss = models.CharField(max_length=100)
     checked = models.DateTimeField('date last checked')
+    body_tag = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
 
     def __str__(self):

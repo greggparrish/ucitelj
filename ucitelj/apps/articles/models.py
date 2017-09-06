@@ -10,7 +10,7 @@ class Article(models.Model):
     img_url = models.CharField(max_length=250, null=True)
     date = models.DateTimeField('article post date')
     title = models.CharField(max_length=250, unique=True)
-    url = models.CharField(max_length=200, unique=True)
+    permalink = models.CharField(max_length=200, unique=True)
     slug = models.CharField(max_length=250, unique=True)
 
     def __str__(self):

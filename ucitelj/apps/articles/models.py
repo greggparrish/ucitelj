@@ -18,8 +18,8 @@ class Article(models.Model):
 
 
 class ArticleText(models.Model):
-    article = models.ForeignKey('Article', on_delete=models.CASCADE)
+    article = models.ForeignKey('Article', on_delete=models.CASCADE, unique=True)
     text = models.TextField()
 
     def __str__(self):
-        return "{}".format(Truncator(text).chars(75))
+        return "{}".format(Truncator(self.text).chars(75))

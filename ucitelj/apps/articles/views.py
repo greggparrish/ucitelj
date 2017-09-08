@@ -49,15 +49,14 @@ def index(request):
 
 def detail(request, slug):
     '''
-    get article, text if exists, if not, feed article id, permalink,
-    and body tag containing main text to get_article_contenti, save, render
+    get article, text if exists, if not, send article id, permalink,
+    and body tag containing main text to get_article_content, save, render
     '''
-    article = get_object_or_404(Article, slug=slug)
+    article = get_object_or_404(Article.objects.prefetch_related(), slug=slug)
     try:
-      at = ArticleText.objects.get(article_id=article.id)
+      at = list(ArticleText.objects.get(article_id=article.id))
     except:
-      at = get_article_content(article.id, article.permalink)
-
+      at = get_article_content(article)
 
     context = {
         'article' : article,

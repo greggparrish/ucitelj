@@ -9,7 +9,6 @@ from django.template import loader
 
 from ..feeds.models import Feed, Subscription
 from .models import Article, ArticleText
-from .get_articles import update_articles, get_article_content
 
 
 def index(request):
@@ -49,14 +48,13 @@ def index(request):
 
 def detail(request, slug):
     '''
-    get article, text if exists, if not, send article id, permalink,
-    and body tag containing main text to get_article_content, save, render
+    get article, text if exists, if not, get_article_content, save, render
     '''
     article = get_object_or_404(Article.objects.prefetch_related(), slug=slug)
     try:
       at = list(ArticleText.objects.get(article_id=article.id))
     except:
-      at = get_article_content(article)
+      at = ArticleText.objects.get_article_content(article)
 
     context = {
         'article' : article,

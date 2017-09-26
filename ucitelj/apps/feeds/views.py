@@ -1,8 +1,10 @@
+import datetime
+
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.template import loader
-
+from django.utils import timezone
 
 from .models import Feed, Subscription
 from ..articles.models import Article
@@ -20,7 +22,10 @@ def index(request):
 
 def detail(request, slug):
     feed = get_object_or_404(Feed, slug=slug)
-    articles = Article.objects.filter(feed_id=feed.id)
+    five_hours_ago = timezone.now() - datetime.timedelta(hours=5)
+    if feed.checked < five_hours_ago:
+      Feed.update_feed(feed)
+    articles = Article.objects.filter(feed_id=feed.id).values('slug','title').order_by('-date')[:20]
     context = {
         'feed' : feed,
         'articles' : articles,

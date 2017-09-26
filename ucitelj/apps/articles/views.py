@@ -35,6 +35,7 @@ def index(request):
             id__in=[
                 1, 2, 3]).values_list(
             'id', flat=True)
+
     articles = Article.objects.filter(
         feed_id__in=user_subs).order_by('feed_id').filter(
         date__gte=datetime.date.today() -
@@ -54,7 +55,7 @@ def detail(request, slug):
     try:
       at = list(ArticleText.objects.get(article_id=article.id))
     except:
-      at = ArticleText.objects.get_article_content(article)
+      at = ArticleText.get_article_content(article)
 
     context = {
         'article' : article,

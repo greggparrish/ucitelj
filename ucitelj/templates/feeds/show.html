@@ -14,7 +14,7 @@
 	  <p>Feeds unavailable.</p>
 	{% endif %}
     {% for a in articles %}
-    <p><a href='/articles/{{ a.slug }}'>{{ a.title }}</a></p>
+      <p><a href='/articles/{{ a.slug }}'>{{ a.title }}</a></p>
     {% endfor %}
 {% endblock %}
 

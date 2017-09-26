@@ -1,13 +1,23 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
+from datetime import datetime
+import feedparser
+import calendar
+from time import mktime
+from slugify import slugify
+
+from ..articles.models import Article
 
 class Feed(models.Model):
     GENRE_CHOICES = (
+        (5, 'catholic'),
         (0, 'news'),
         (1, 'horror'),
         (4, 'politics'),
         (2, 'pop culture'),
+        (6, 'regional'),
         (3, 'scifi'),
     )
     COUNTRY_CHOICES = (
@@ -23,6 +33,18 @@ class Feed(models.Model):
     checked = models.DateTimeField('date last checked')
     body_tag = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
+
+    def update_feed(feed):
+        posts = feedparser.parse(feed.rss)
+        for p in posts.entries:
+            title = p.title
+            date = datetime.fromtimestamp(mktime(p.published_parsed))
+            url = p.link
+            timestamp = calendar.timegm(p.published_parsed)
+            slug = "{}_{}_{}".format(feed.id, timestamp, slugify(title))
+            new_text, add_date = Article.objects.get_or_create(feed_id=feed.id,title=title,date=date,permalink=url,slug=slug)
+        feed.checked = timezone.now()
+        feed.save()
 
     def __str__(self):
         return self.name

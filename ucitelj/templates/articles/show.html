@@ -6,6 +6,7 @@
       <h1>
         {{ article.title }}
       </h1>
+      <p>{{ article.date }}</p>
       <p>From: <a href='/feeds/{{ article.feed.slug }}'>{{ article.feed.name }}</a></p>
       <a href='{{article.permalink}}' target='_blank'>original article</a>
       <hr />

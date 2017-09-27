@@ -14,7 +14,8 @@ urlpatterns = [
 
     url(r'^articles/', include('apps.articles.urls')),
     url(r'^feeds/', include('apps.feeds.urls')),
-    url(r'^words/', include('apps.feeds.urls')),
+    url(r'^users/', include('apps.users.urls')),
+    url(r'^words/', include('apps.words.urls')),
 ]
 
 if settings.DEBUG:

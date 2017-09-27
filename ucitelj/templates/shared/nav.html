@@ -7,7 +7,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="/">{{ config.APP_NAME }}</a>
+			<a class="navbar-brand" href="/">Učitelj</a>
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
@@ -28,21 +28,17 @@
 				</li>
 			</ul>
 
-
 			<ul class="nav navbar-nav navbar-right">
-        {% if current_user.is_authenticated %}
-          {% if current_user.is_admin %}
-				    <li><a href="/admin">Admin</a></li>
+        {% if user.is_authenticated %}
+          {% if user.is_superuser %}
+		      <li><a href="/admin">Admin</a></li>
           {% endif %}
-				  <li><a href="/account/manage">Account</a></li>
-				  <li><a href="/account/logout">Logout</a></li>
+              <li><a href="/users/profile">Account</a></li>
+              <li><a href="/users/logout">Logout</a></li>
         {% else %}
-				  <li><a href="/account/login">Login</a></li>
+			  <li><a href="/users/login">Login</a></li>
         {% endif %}
 			</ul>
-
-
-
 		</div><!--/.nav-collapse -->
 	</div>
 </nav>

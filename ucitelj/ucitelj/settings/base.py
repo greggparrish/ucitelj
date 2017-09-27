@@ -7,6 +7,8 @@ DEBUG = False
 DJANGO_ROOT = dirname(dirname(abspath(__file__)))
 SITE_ROOT = dirname(DJANGO_ROOT)
 
+LOGIN_REDIRECT_URL = '/articles'
+
 SITE_NAME = 'ucitelj'
 
 
@@ -33,6 +35,7 @@ LOCAL_APPS = [
     'apps.articles',
     'apps.base',
     'apps.feeds',
+    'apps.users',
     'apps.words'
 ]
 

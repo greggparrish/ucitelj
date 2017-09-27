@@ -4,15 +4,14 @@
 
 <html{% if LANGUAGE_CODE %} lang="{{ LANGUAGE_CODE }}"{% endif %}>
 	<head>
-			<meta charset="utf-8">
-			<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge" /><![endif]-->
-			<meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta charset="utf-8">
+      <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge" /><![endif]-->
+      <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta name="description" content="{% block meta_description %}{% endblock %}">
       <meta name="author" content="{% block meta_author %}{% endblock %}">
-
       <link rel="icon" type="image/png" href="{% static 'img/favicon.ico' %}" />
 
-			<title>{% block title %}UCITELJ{% endblock %}</title>
+			<title>učitelj{% block title %}{% endblock %}</title>
 			{% bootstrap_css %}
       <link rel="stylesheet" href="{% static 'css/style.css' %}">
 

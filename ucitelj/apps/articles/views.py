@@ -8,7 +8,9 @@ from django.template import loader
 
 
 from ..feeds.models import Feed, Subscription
+from ..words.models import Rijec
 from .models import Article, ArticleText
+from .stemmer import create_wordlist
 
 
 def index(request):
@@ -56,10 +58,17 @@ def detail(request, slug):
       at = list(ArticleText.objects.get(article_id=article.id))
     except:
       at = ArticleText.get_article_content(article)
-
+    wordlist = create_wordlist(at)
+    glossary = []
+    for word in set(wordlist):
+        definition = Rijec.objects.filter(term__startswith=word)
+        if definition:
+          glossary.append(definition)
     context = {
         'article' : article,
         'at' : at,
+        'wordlist' : wordlist,
+        'glossary' : glossary
     }
     template = loader.get_template('articles/show.html')
     return HttpResponse(template.render(context,request))

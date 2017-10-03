@@ -39,7 +39,7 @@ def index(request):
             'id', flat=True)
 
     articles = Article.objects.filter(
-        feed_id__in=user_subs).order_by('feed_id').filter(
+        feed_id__in=user_subs).order_by('feed_id', '-date').filter(
         date__gte=datetime.date.today() -
         datetime.timedelta(
             days=7))

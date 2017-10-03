@@ -35,14 +35,14 @@ class Feed(models.Model):
     slug = models.SlugField(unique=True)
 
     def update_feed(feed):
-        posts = feedparser.parse(feed.rss)
+        posts = feedparser.parse(feed.rss, agent='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36')
         for p in posts.entries:
             title = p.title
             date = datetime.fromtimestamp(mktime(p.published_parsed))
             url = p.link
             timestamp = calendar.timegm(p.published_parsed)
             slug = "{}_{}_{}".format(feed.id, timestamp, slugify(title))
-            new_text, add_date = Article.objects.get_or_create(feed_id=feed.id,title=title,date=date,permalink=url,slug=slug)
+            new_text, add_date = Article.objects.get_or_create(permalink=url, defaults={'feed_id':feed.id,'title':title,'date':date,'slug':slug})
         feed.checked = timezone.now()
         feed.save()
 

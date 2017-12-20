@@ -1,6 +1,6 @@
 {% extends "articles/articlebase.html" %}
 {% load thumbnail %}
-{% block content %}
+{% block articlecontent %}
 	{% if article %}
     <div class='container'>
       <h1>
@@ -15,21 +15,27 @@
       <hr />
       <div class='row'>
         <div class='col-12 col-lg-8' id='article-content'>
+          <h2>ARTICLE</h2>
           <p>{{article.article_text}}</p>
           {% for p in at %}
             <div class='para_{{  forloop.counter }}'>
               {{ p | safe}}
             </div>
-            <div class='para_glossary' id='para_{{  forloop.counter }}'></div>
             {% endfor %}
         </div>
         <div class='col-12 col-lg-4' id='article-glossary'>
+            <h2>GLOSSARY</h2>
+            <ul class='glossary'>
+                {% for g in glossary %}
+                  {% for w in g %}
+                  {% if forloop.counter == 1 %}
+                    <li>{{ w.rijec }} : {{ w.word }}</li>
+                  {% else %}
+                    <li class='more-definitions'>{{ w.rijec }} : {{ w.word }}</li>
+                  {% endif %}
+                  {% endfor %}
+                {% endfor %}
             {{ wordlist }}
-            {% for g in glossary %}
-              {% for w in g %}
-                <li>{{ w }}</li>
-              {% endfor %}
-            {% endfor %}
         </div>
       </div>
     </div>

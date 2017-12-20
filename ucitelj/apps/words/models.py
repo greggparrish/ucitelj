@@ -37,4 +37,4 @@ class Definition(models.Model):
     plural = models.BooleanField(default=False)
     wordrole = models.ForeignKey(WordRole, on_delete=models.PROTECT)
     def __str__(self):
-        return "%s  --  %s" % (self.rijec, self.word)
+        return "%s :  %s" % (self.rijec, self.word)

@@ -10,6 +10,8 @@ Django = "*"
 feedparser = "*"
 python-slugify = "*"
 bs4 = "*"
+lxml = "*"
+requests = "*"
 
 [dev-packages]
 django-debug-toolbar = "*"

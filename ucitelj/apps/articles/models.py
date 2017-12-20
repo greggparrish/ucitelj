@@ -31,12 +31,12 @@ class ArticleText(models.Model):
         r = requests.get(article.permalink)
         soup = BeautifulSoup(r.content, 'lxml')
         at = []
-        e,n = re.split('\.|#', article.feed.body_tag)
+        e, n = re.split('\.|#', article.feed.body_tag)
         s = '#' if '#' in article.feed.body_tag else '.'
         if '#' in article.feed.body_tag:
-          bt = soup.find(e, id=n)
+            bt = soup.find(e, id=n)
         else:
-          bt = soup.find(e, class_=n)
+            bt = soup.find(e, class_=n)
         ps = bt.find_all('p')
         for p in ps:
             if p.text != '':

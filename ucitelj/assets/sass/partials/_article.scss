@@ -1,0 +1,14 @@
+#article {
+    #article-content {
+        font-size: 1.2em;
+        line-height: 1.5em;
+    }
+    #article-glossary {
+        ul.glossary {
+          li.more-definitions {
+              display: none;
+          }
+        }
+
+    }
+}

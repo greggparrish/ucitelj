@@ -1,9 +1,9 @@
-from django.conf.urls import url
+from django.urls import path
 
 from . import views
 
 urlpatterns = [
-    url(r'^$', views.index, name='index'),
-    url(r'^subscriptions/', views.subscription, name='subscription'),
-    url(r'^(?P<slug>[\w-]+)/$', views.detail, name='detail'),
+    path('', views.index),
+    path('subscriptions/', views.subscription),
+    path('<slug>/', views.detail),
 ]

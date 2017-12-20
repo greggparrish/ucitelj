@@ -1,8 +1,8 @@
-from django.conf.urls import url
+from django.urls import path
 
 from . import views
 
 urlpatterns = [
-    url(r'^$', views.index, name='index'),
-    url(r'^(?P<slug>[\w-]+)/$', views.detail, name='detail'),
+    path('', views.index),
+    path('<slug>/', views.detail),
 ]

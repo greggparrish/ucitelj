@@ -25,7 +25,6 @@ migrations/
 node_modules/
 parts/
 sdist/
-static/
 var/
 uzbl.sh
 
@@ -40,9 +39,13 @@ pip-delete-this-directory.txt
 # Flask stuff:
 instance/
 .webassets-cache
+app/static/public/
+app/static/img/
 
 # Sphinx documentation
 docs/_build/
 
 # Config file
 config.env
+.env
+

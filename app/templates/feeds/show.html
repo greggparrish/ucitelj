@@ -1,0 +1,35 @@
+{% extends "layouts/base.html" %}
+{% block title %}Feed: {{ f.name }} : {%endblock %}
+
+{% block content %}
+  <div class='col-xs-12'>
+    <div class='col-xs-3'>
+      <img src="/{{ f.logo  }}" />
+    </div>
+    <div class='col-xs-9'>
+      <h1>{{ f.name }}</h1>
+      <p>{{ f.country }}</p>
+      <p>{{ f.about }}</p>
+    </div>
+  </div>
+
+{% for year, year_group in fa|groupby('date.year')|reverse %}
+  {% for month, month_group in year_group|groupby('date.month')|reverse %}
+		{% for day, list in month_group|groupby('date.day')|reverse %}
+        <ul class='list-unstyled'>
+			    <li>{{ day }}/{{ month }}/{{ year }}</li>
+					{% for a in list %}
+						<li><a href='/articles/{{ a.id }}/{{ a.slug }}'>{{ a.title }}</a>
+					{% endfor %}
+        </ul>
+		{% endfor %}
+  {% endfor %}
+{% endfor %}
+
+{% endblock %}
+
+
+{% block extra_js %}
+{% endblock %}
+
+

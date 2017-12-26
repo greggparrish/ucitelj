@@ -1,0 +1,21 @@
+{% extends "layouts/base.html" %}
+{% block title %}Feeds: {%endblock %}
+
+{% block content %}
+  {% for f in feeds %}
+  <div class='col-xs-12 feed-list'>
+    <div class='col-xs-6 col-md-2'>
+      <img src="/{{ f.logo }}" />
+    </div>
+    <div class='col-xs-6 col-md-10'>
+      <h3><a href="{{ f.slug }}">{{ f.name }}</a></h3>
+      <p>{{ f.about }}</p>
+    </div>
+  </div>
+  {% endfor %}
+{% endblock %}
+
+
+{% block extra_js %}
+{% endblock %}
+

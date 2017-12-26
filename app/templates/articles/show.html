@@ -1,0 +1,20 @@
+{% extends "layouts/base.html" %}
+{% block title %}Article: {{ a.name }} : {%endblock %}
+
+{% block content %}
+  <h1>{{ a.title }}</h1>
+  <p>{{ a.date.strftime('%b %d, %Y') }}</p>
+  <p>
+    From: <a href='/feeds/{{ a.feed.slug }}'>{{ a.feed.name }}</a>
+    |
+    <a href='{{a.permalink}}' target='_blank'>original article</a>
+  </p>
+  <p>{{ at.text|safe }}</p>
+{% endblock %}
+
+
+{% block extra_js %}
+{% endblock %}
+
+
+

@@ -2,6 +2,8 @@ from app import app
 from app.models.articles import Article, ArticleText
 from flask import Blueprint, render_template
 
+from app.models.words import Definition
+
 article_bp = Blueprint('articles', __name__)
 
 @article_bp.route('/')
@@ -17,5 +19,6 @@ def show(article_id, article_slug):
         at = at.text
     else:
         at = ArticleText().get_article_content(a)
-    return render_template('articles/show.html', a=a, at=at)
+    g = Definition().create_glossary(at)
+    return render_template('articles/show.html', a=a, at=at, g=g)
 

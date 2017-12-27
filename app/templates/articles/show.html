@@ -9,7 +9,18 @@
     |
     <a href='{{a.permalink}}' target='_blank'>original article</a>
   </p>
-  <p>{{ at|safe }}</p>
+  <div class='col-xs-12 col-md-8 text-column'>
+    <p>{{ at|safe }}</p>
+  </div>
+  <div class='col-xs-12 col-md-4'>
+    <ul class='list-unstyled'>
+      {% for dd in g %}
+        {%  for d in dd %}
+          <li id='{{ d.id  }}'>{{ d }}</li>
+        {% endfor %}
+      {% endfor %}
+    </ul>
+  </div>
 {% endblock %}
 
 

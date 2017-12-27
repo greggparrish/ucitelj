@@ -13,7 +13,9 @@ def index(page=1):
 def show(article_id, article_slug):
     a = Article.query.get(article_id)
     at = ArticleText.query.filter(ArticleText.article_id==a.id).first()
-    if at == None:
-        at = 'lll'
+    if at != None:
+        at = at.text
+    else:
+        at = ArticleText().get_article_content(a)
     return render_template('articles/show.html', a=a, at=at)
 

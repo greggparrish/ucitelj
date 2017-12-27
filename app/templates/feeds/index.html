@@ -5,10 +5,10 @@
   {% for f in feeds %}
   <div class='col-xs-12 feed-list'>
     <div class='col-xs-6 col-md-2'>
-      <img src="/{{ f.logo }}" />
+      <a href="{{ url_for('feeds.show', feed_slug=f.slug) }}"><img src="/{{ f.logo }}" /></a>
     </div>
     <div class='col-xs-6 col-md-10'>
-      <h3><a href="{{ f.slug }}">{{ f.name }}</a></h3>
+      <h3><a href="{{ url_for('feeds.show', feed_slug=f.slug) }}">{{ f.name }}</a></h3>
       <p>{{ f.about }}</p>
     </div>
   </div>

@@ -43,13 +43,13 @@ class ArticleText(db.Model):
         ps = bt.find_all('p')
         for p in ps:
             if p.text != '':
-                at + "<p>{}</p>".format(p.text.strip())
-
-        with app.app_context():
-            db.create_all()
-            new_text = ArticleText(article=article, text=at)
-            db.add(new_text)
-            db.commit()
+                at += "<p>{}</p>".format(p.text.strip())
+        new_text = ArticleText(
+                article_id=article.id,
+                text=at
+                )
+        db.session.add(new_text)
+        db.session.commit()
         return at
 
     def __str__(self):

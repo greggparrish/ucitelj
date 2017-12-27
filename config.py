@@ -11,10 +11,19 @@ class Config(object):
             }
     SQLALCHEMY_DATABASE_URI = 'postgresql://%(user)s:%(pass)s@localhost:5432/%(db)s' % UCITELJ_DB
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    ADMIN_EMAIL='me@greggparrish.com'
 
     CSRF_ENABLED = True
     DEBUG = False
     TESTING = False
+
+    MAIL_USERNAME = os.environ.get('UCITELJ_MAIL_USER')
+    MAIL_PASSWORD = os.environ.get('UCITELJ_MAIL_PASS')
+    MAIL_DEFAULT_SENDER = '"Sender" <noreply@greggparrish.com>'
+    MAIL_SERVER = 'smtp.gmail.com'
+    MAIL_PORT = 465
+    MAIL_USE_SSL = True
+    MAIL_USE_TLS = False
 
 class DevConfig(Config):
     DEVELOPMENT = True

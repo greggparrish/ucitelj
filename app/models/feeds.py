@@ -5,10 +5,13 @@ import feedparser
 import calendar
 from time import mktime
 from datetime import datetime
+from sqlalchemy.exc import IntegrityError
 from slugify import slugify
+from flask_login import login_required
 
 from app import app, db
 from app.models.users import User
+from app.models.articles import Article
 
 TYPE_CHOICES = ('culture', 'news', 'politics', 'regional', 'religious')
 COUNTRY_CHOICES = ('Croatia', 'Serbia')
@@ -44,18 +47,22 @@ class Feed(db.Model):
                 timestamp = calendar.timegm(p.published_parsed)
                 slug = "{}_{}_{}".format(feed.id, timestamp, slugify(title))
                 try:
-                    with db.session.begin_nested():
-                        new_text = Article(permalink=url, defaults={'feed_id':feed.id,'title':title,'date':date,'slug':slug})
-                        db.session.add(new_text)
+                    new_text = Article(
+                            permalink=url,
+                            feed_id=feed.id,
+                            title=title,
+                            date=date,
+                            slug=slug
+                            )
+                    db.session.add(new_text)
                 except IntegrityError:
-                    #Article text already exists
-                    new_text = Article.query.filter(permalink=url).first()
-            feed.checked = timezone.now()
-            db.session.add(feed)
+                    db.session.rollback()
+            feed.checked = datetime.now()
             db.session.commit()
         return feed
 
 
+@login_required
 class Subscription(db.Model):
     __tablename__ = 'subscriptions'
     id = db.Column(db.Integer, primary_key=True)

@@ -5,14 +5,13 @@ from bs4 import BeautifulSoup
 from slugify import slugify
 
 from app import app, db
-from app.models.feeds import Feed
 
 
 class Article(db.Model):
     __tablename__ = 'articles'
 
     id = db.Column(db.Integer, primary_key=True)
-    feed_id = db.Column(db.Integer, db.ForeignKey(Feed.id))
+    feed_id = db.Column(db.Integer, db.ForeignKey('feeds.id'), nullable=False)
     title = db.Column(db.String(250))
     date = db.Column(db.DateTime)
     img_url = db.Column(db.String(250))

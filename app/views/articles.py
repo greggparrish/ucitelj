@@ -2,7 +2,7 @@ from app import app
 from app.models.articles import Article, ArticleText
 from flask import Blueprint, render_template
 
-article_bp = Blueprint('article', __name__)
+article_bp = Blueprint('articles', __name__)
 
 @article_bp.route('/')
 def index(page=1):

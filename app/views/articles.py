@@ -23,7 +23,10 @@ def show(article_id, article_slug):
         at = ArticleText().get_article_content(a)
     if article_text.has_dict == True:
         g_dir = os.path.join( app.root_path, 'static/public/glossaries/')
-        glossary = json.loads(g_dir+article_id+'.json')
+        try:
+          glossary = json.load(open(g_dir+article_id+'.json'))
+        except:
+          glossary = Definition().create_glossary(article_id, at)
     else:
         glossary = Definition().create_glossary(article_id, at)
     return render_template('articles/show.html', a=a, at=at, glossary=glossary)

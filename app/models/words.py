@@ -76,7 +76,6 @@ class Definition(db.Model):
             article_text = ArticleText.query.filter(article_id==article_id).first()
             article_text.has_dict = True
             db.session.commit()
-        print(jg, file=sys.stdout)
         return jg
 
 

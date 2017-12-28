@@ -38,16 +38,20 @@ def korjenuj(pojavnica):
 def create_wordlist(article_text):
     '''
     Given a text, remove html tags, split into words, stem each if
-    over 2 letters, return as dict {original: stem} w/o duplicates
+    over 2 letters, return as list of dicts {original: stem} w/o duplicates
+    in groups according to paragraph order
     '''
-    wordlist = dict()
-
+    wordlist = []
     dupes = []
     htmltags = re.compile('<.*?>')
-    pp = re.sub(htmltags, '', article_text)
-    for word in pp.split():
-        checkword = ''.join(e for e in word.lower() if e.isalpha())
-        if checkword not in stop and word.lower() not in dupes and len(checkword) > 2:
-            wordlist[checkword] = (korjenuj(transformiraj(checkword)))
-        dupes.append(word.lower())
+
+    for paragraph in article_text.split('<p>'):
+        pp = re.sub(htmltags, '', paragraph)
+        paralist = dict()
+        for word in pp.split():
+            checkword = ''.join(e for e in word.lower() if e.isalpha())
+            if checkword not in stop and word.lower() not in dupes and len(checkword) > 2:
+                paralist[checkword] = (korjenuj(transformiraj(checkword)))
+            dupes.append(word.lower())
+        wordlist.append(paralist)
     return wordlist

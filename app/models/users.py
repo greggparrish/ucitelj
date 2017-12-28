@@ -66,9 +66,12 @@ class User(db.Model, UserMixin):
         return user
 
 class Role(db.Model):
+    '''
+    User roles: admin, editor, public
+    '''
     __tablename__ = 'roles'
     id = db.Column(db.Integer(), primary_key=True)
-    name = db.Column(db.String(50), unique=True)
+    name = db.Column(db.String(50), unique=True, nullable=False)
 
     def __repr__(self):
         return '<Role: {}>'.format(self.name)
@@ -76,8 +79,8 @@ class Role(db.Model):
 class UserRoles(db.Model):
     __tablename__ = 'user_roles'
     id = db.Column(db.Integer(), primary_key=True)
-    user_id = db.Column(db.Integer(), db.ForeignKey('users.id', ondelete='CASCADE'))
-    role_id = db.Column(db.Integer(), db.ForeignKey('roles.id', ondelete='CASCADE'))
+    user_id = db.Column(db.Integer(), db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    role_id = db.Column(db.Integer(), db.ForeignKey('roles.id', ondelete='CASCADE'), nullable=False)
 
     def __repr__(self):
         return '<User role: {} {}>'.format(self.user.username, self.role.name)

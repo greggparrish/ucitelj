@@ -1,0 +1,12 @@
+/* PRIMARY BRANDING  */
+a {
+  text-decoration: none;
+  @include fade_transition;
+  &:hover, &:focus, &:active {
+    text-decoration: none;
+  }
+  &:visited {
+    color: $red;
+  }
+}
+

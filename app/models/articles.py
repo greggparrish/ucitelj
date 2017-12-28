@@ -8,15 +8,18 @@ from app import app, db
 
 
 class Article(db.Model):
+    '''
+    Article base: FK to feed, rel w/ ArticleText
+    '''
     __tablename__ = 'articles'
 
     id = db.Column(db.Integer, primary_key=True)
-    feed_id = db.Column(db.Integer, db.ForeignKey('feeds.id'), nullable=False)
-    title = db.Column(db.String(250))
+    feed_id = db.Column(db.Integer, db.ForeignKey('feeds.id', ondelete='CASCADE'), nullable=False)
+    title = db.Column(db.String(250), nullable=False)
     date = db.Column(db.DateTime)
     img_url = db.Column(db.String(250))
-    permalink = db.Column(db.String(250), unique=True)
-    slug = db.Column(db.String(250))
+    permalink = db.Column(db.String(250), nullable=False, unique=True)
+    slug = db.Column(db.String(250), nullable=False, unique=True)
     text = db.relationship("ArticleText", uselist=False, backref="article")
 
     def __repr__(self):
@@ -24,12 +27,20 @@ class Article(db.Model):
 
 
 class ArticleText(db.Model):
+    '''
+    Article text: Added on first visit to article.show via get_article_content
+    '''
     __tablename__ = 'article_texts'
     id = db.Column(db.Integer, primary_key=True)
-    article_id = db.Column(db.Integer, db.ForeignKey(Article.id))
+    article_id = db.Column(db.Integer, db.ForeignKey('articles.id', ondelete='CASCADE'), nullable=False, unique=True)
+    has_dict = db.Column(db.Boolean, default=False)
     text = db.Column(db.Text)
 
     def get_article_content(self, article):
+        '''
+        Get article body from body_tag, grab all p tags, add to db as string
+        Return: article text string as at
+        '''
         r = requests.get(article.permalink)
         soup = BeautifulSoup(r.content, 'lxml')
         at = ''
@@ -41,7 +52,7 @@ class ArticleText(db.Model):
             bt = soup.find(e, class_=n)
         ps = bt.find_all('p')
         for p in ps:
-            if p.text != '':
+            if p.text and p.text != '</p>' and '[CDATA' not in p:
                 at += "<p>{}</p>".format(p.text.strip())
         new_text = ArticleText(
                 article_id=article.id,

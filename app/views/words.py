@@ -1,5 +1,5 @@
 from app import app
-from app.models.words import WordRole, Rijec, Word
+from app.models.words import WordRole, HrWord, EnWord
 from flask import Blueprint, render_template
 
 word_bp = Blueprint('words', __name__)

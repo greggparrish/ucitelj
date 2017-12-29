@@ -9,18 +9,20 @@
     |
     <a href='{{a.permalink}}' target='_blank'>original article</a>
   </p>
-  <div class='col-xs-12 col-md-10 text-column'>
+  <div class='col-xs-12 col-md-9 text-column'>
     {% for p in at.split('</p><p>') %}
-      {% for def in glossary.paragraphs[loop.index - 1].definitions %}
-        <ul class='list-inline glossary'>  
-          {% for d in def %}
-          <li id='{{ d.def_id }}'>
-              <span class='hr-term'>{{ d.hr_word }}: </span>
-              <span class='en-term'>{{ d.en_words|join(', ') }}</span>
-            </li>
-          {% endfor %}
-        </ul>  
-      {% endfor %}
+      {% if glossary.paragraphs[loop.index] %}
+        {% for def in glossary.paragraphs[loop.index].definitions %}
+          <ul class='list-inline glossary'>  
+            {% for d in def %}
+            <li id='{{ d.def_id }}'>
+                <span class='hr-term'>{{ d.hr_word }}: </span>
+                <span class='en-term'>{{ d.en_words|join(', ') }}</span>
+              </li>
+            {% endfor %}
+          </ul>  
+        {% endfor %}
+      {% endif %}
       <p>{{ p|safe }}</p>
     {% endfor %}
   </div>

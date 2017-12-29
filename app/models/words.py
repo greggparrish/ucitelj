@@ -35,7 +35,7 @@ class Definition(db.Model):
     def __repr__(self):
         return '{} :: {}'.format(self.hr_words.term, self.en_words.term)
 
-    def create_glossary(self, article_id, article_text):
+    def create_glossary(self, a_id, article_text):
         '''
         Given an article, create a wordlist using utils.stemmer, get definitions, save as json file in public/
         Return: glossary as json
@@ -65,16 +65,15 @@ class Definition(db.Model):
                         'en_words' : [ w.en_words.term for w in word_defs ]
                         }
                     paralist.append(def_group)
-            if paralist:
-                glossary.append({
-                    'paragraph' : paracount,
-                    'definitions' : [paralist]
-                    })
+            glossary.append({
+                'paragraph' : paracount,
+                'definitions' : [paralist]
+                })
             paracount += 1
-        jg = write_json_glossary(article_id, glossary)
+        jg = write_json_glossary(a_id, glossary)
         if jg:
-            article_text = ArticleText.query.filter(article_id==article_id).first()
-            article_text.has_dict = True
+            at = ArticleText.query.filter(ArticleText.article_id==a_id).first()
+            at.has_dict = True
             db.session.commit()
         return jg
 

@@ -1,0 +1,7 @@
+{% extends "layouts/base.html" %}
+{% block title %}Admin: {%endblock %}
+
+{% block content %}
+{{ current_user.has_role('admin')  }}
+{% endblock %}
+

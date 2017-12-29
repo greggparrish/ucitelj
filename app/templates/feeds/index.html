@@ -2,6 +2,9 @@
 {% block title %}Feeds: {%endblock %}
 
 {% block content %}
+  {% if current_user.is_authenticated and current_user.has_role('admin') %}
+    is admin
+  {% endif %}
   {% for f in feeds %}
   <div class='col-xs-12 feed-list'>
     <div class='col-xs-6 col-sm-2'>

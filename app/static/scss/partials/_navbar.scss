@@ -1,6 +1,12 @@
 nav.navbar.navbar-default.navbar-static-top {
-  background: $black;
-  color: $light_grey;
+  background: $white;
+  color: $black;
   margin-bottom: 0;
   font-size: 1.2em;
+  a {
+    color: $black;
+    &:hover, &:focus, &:active {
+      color: $light_blue;
+    }
+  }
 }

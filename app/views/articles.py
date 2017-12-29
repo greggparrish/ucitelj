@@ -1,8 +1,9 @@
+import sys
 import os
 import json
 from flask import Blueprint, render_template
 
-from app import app
+from app import app, db
 from app.models.articles import Article, ArticleText
 from app.models.words import Definition
 
@@ -21,13 +22,16 @@ def show(article_id, article_slug):
         at = article_text.text
     else:
         at = ArticleText().get_article_content(a)
-    if article_text.has_dict == True:
+    if at == False:
+        return render_template('errors/connection.html')
+    elif article_text and article_text.has_dict == True:
         g_dir = os.path.join( app.root_path, 'static/public/glossaries/')
         try:
-          glossary = json.load(open(g_dir+article_id+'.json'))
+            glossary = json.load(open(g_dir+article_id+'.json'))
         except:
-          glossary = Definition().create_glossary(article_id, at)
+            glossary = Definition().create_glossary(article_id, at)
     else:
         glossary = Definition().create_glossary(article_id, at)
+
     return render_template('articles/show.html', a=a, at=at, glossary=glossary)
 

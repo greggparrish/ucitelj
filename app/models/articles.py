@@ -33,7 +33,7 @@ class ArticleText(db.Model):
     __tablename__ = 'article_texts'
     id = db.Column(db.Integer, primary_key=True)
     article_id = db.Column(db.Integer, db.ForeignKey('articles.id', ondelete='CASCADE'), nullable=False, unique=True)
-    has_dict = db.Column(db.Boolean, default=False)
+    has_dict = db.Column(db.Boolean)
     text = db.Column(db.Text)
 
     def get_article_content(self, article):
@@ -41,26 +41,30 @@ class ArticleText(db.Model):
         Get article body from body_tag, grab all p tags, add to db as string
         Return: article text string as at
         '''
-        r = requests.get(article.permalink)
-        soup = BeautifulSoup(r.content, 'lxml')
-        at = ''
-        e, n = re.split('\.|#', article.feed.body_tag)
-        s = '#' if '#' in article.feed.body_tag else '.'
-        if '#' in article.feed.body_tag:
-            bt = soup.find(e, id=n)
-        else:
-            bt = soup.find(e, class_=n)
-        ps = bt.find_all('p')
-        for p in ps:
-            if p.text and p.text != '</p>' and '[CDATA' not in p:
-                at += "<p>{}</p>".format(p.text.strip())
-        new_text = ArticleText(
-                article_id=article.id,
-                text=at
-                )
-        db.session.add(new_text)
-        db.session.commit()
-        return at
+        try:
+          r = requests.get(article.permalink, timeout=2)
+        except Exception as e:
+          return False
+        if r:
+            soup = BeautifulSoup(r.content, 'lxml')
+            at = ''
+            e, n = re.split('\.|#', article.feed.body_tag)
+            s = '#' if '#' in article.feed.body_tag else '.'
+            if '#' in article.feed.body_tag:
+                bt = soup.find(e, id=n)
+            else:
+                bt = soup.find(e, class_=n)
+            ps = bt.find_all('p')
+            for p in ps:
+                if p.text and p.text != '</p>' and '[CDATA' not in p:
+                    at += "<p>{}</p>".format(p.text.strip())
+            new_text = ArticleText(
+                    article_id=article.id,
+                    text=at
+                    )
+            db.session.add(new_text)
+            db.session.commit()
+            return at
 
     def __str__(self):
         return "Article text for: {}".format(self.article.title)

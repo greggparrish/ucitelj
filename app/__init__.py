@@ -22,7 +22,6 @@ babel = Babel()
 """ INIT APP """
 app = Flask(__name__)
 app.config.from_object(Config)
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 """ INIT UTILS """
 db.init_app(app)
@@ -30,6 +29,7 @@ migrate.init_app(app, db)
 login.init_app(app)
 mail.init_app(app)
 babel.init_app(app)
+
 
 """ BLUEPRINTS """
 from app.views.static import static as static_bp
@@ -48,6 +48,13 @@ from app.views.users import user_bp
 from app.models.users import User
 app.register_blueprint(user_bp, url_prefix='/users')
 
+from app.views.admin import admin_bp
+app.register_blueprint(admin_bp, url_prefix='/admin')
+
+
+""" USER MGMT """
+db_adapter = SQLAlchemyAdapter(db, User)
+user_manager = UserManager(db_adapter, app)
 
 """ ASSETS """
 assets = Environment(app)
@@ -60,7 +67,7 @@ css = Bundle(
         'scss/application.scss',
         filters='pyscss',
         output='public/css/style.css',
-        depends='scss/partials/*.scss')
+        depends='scss/*/*.scss')
 assets.register('js_all', js)
 assets.register('css_all', css)
 

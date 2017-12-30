@@ -1,9 +1,9 @@
 import datetime
 from flask import Blueprint, render_template
-from flask_user import login_required, roles_required
+from flask_user import login_required, roles_required, current_user
 
 from app import app
-from app.models.feeds import Feed
+from app.models.feeds import Feed, Subscription
 from app.models.articles import Article
 
 
@@ -12,7 +12,9 @@ feed_bp = Blueprint('feeds', __name__)
 @feed_bp.route('/')
 def index():
     feeds = Feed.query.order_by(Feed.name)
-    return render_template('feeds/index.html', feeds=feeds)
+    subs = Subscription.query.filter_by(user_id=current_user.id).all()
+    user_subs = [ s.feed_id for s in subs ]
+    return render_template('feeds/index.html', feeds=feeds, user_subs=user_subs)
 
 @feed_bp.route('/<feed_slug>')
 def show(feed_slug):

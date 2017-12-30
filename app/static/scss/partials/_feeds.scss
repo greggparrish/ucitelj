@@ -3,6 +3,28 @@
   img {
     width: 100%;
   }
+  .feed-item {
+    position: relative;
+    h3 {
+      float: left;
+      margin-left: 20px;
+    }
+    span.subButton {
+      position: absolute;
+      float: left;
+      padding: 0;
+      color: $light_grey;
+      font-size: 1.5em;
+      margin-top: 13px;
+      &.subbed, &:hover {
+        color: $green;
+      }
+      &.subbed:hover {
+        color: $red;
+      }
+    }
+    p.about-feed { clear: both; }
+  }
 }
 ul.article-list {
   margin: 20px 10px;

@@ -6,19 +6,29 @@
     is admin
   {% endif %}
   {% for f in feeds %}
-  <div class='col-xs-12 feed-list'>
-    <div class='col-xs-6 col-sm-2'>
-      <a href="{{ url_for('feeds.show', feed_slug=f.slug) }}"><img src="/{{ f.logo }}" /></a>
-    </div>
-    <div class='col-xs-6 col-sm-10'>
-      <h3><a href="{{ url_for('feeds.show', feed_slug=f.slug) }}">{{ f.name }}</a></h3>
-      <p>{{ f.about }}</p>
-    </div>
-  </div>
+		<div class='col-xs-12 feed-list'>
+			<div class='col-xs-6 col-sm-2'>
+				<a href="{{ url_for('feeds.show', feed_slug=f.slug) }}"><img src="/{{ f.logo }}" /></a>
+			</div>
+			<div class='col-xs-6 col-sm-10 feed-item'>
+					<span class='subButton btn {% if f.id in user_subs %}subbed{%endif%}' data-feed='{{ f.id }}' data-sub='{% if f.id in user_subs %}unsub{% else %}sub{%endif%}'> + </span>
+				<h3><a href="{{ url_for('feeds.show', feed_slug=f.slug) }}">{{ f.name }}</a></h3>
+				<p class='about-feed'>{{ f.about }}</p>
+			</div>
+		</div>
   {% endfor %}
 {% endblock %}
 
 
 {% block extra_js %}
+<script>
+	$(".subButton").click(function () {
+		var feed_id = $(this).attr("data-feed");
+		var sub_type  = $(this).attr("data-sub");
+		$.get('/users/subscriptions/', {feed_id : feed_id, sub_type : sub_type}, function(data){ });
+		$(this).toggleClass('subbed');
+		return false;
+	});
+</script>
 {% endblock %}
 

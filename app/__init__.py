@@ -8,7 +8,9 @@ from flask_login import LoginManager
 from flask_mail import Mail
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
+from flask_uploads import UploadSet, IMAGES, configure_uploads
 from flask_user import login_required, UserManager, UserMixin, SQLAlchemyAdapter
+from flask_wtf.csrf import CSRFProtect
 
 
 from config import Config
@@ -29,6 +31,9 @@ migrate.init_app(app, db)
 login.init_app(app)
 mail.init_app(app)
 babel.init_app(app)
+csrf = CSRFProtect(app)
+images = UploadSet('images', IMAGES)
+configure_uploads(app, images)
 
 
 """ BLUEPRINTS """
@@ -48,8 +53,6 @@ from app.views.users import user_bp
 from app.models.users import User
 app.register_blueprint(user_bp, url_prefix='/users')
 
-from app.views.admin import admin_bp
-app.register_blueprint(admin_bp, url_prefix='/admin')
 
 
 """ USER MGMT """

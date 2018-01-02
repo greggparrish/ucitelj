@@ -51,7 +51,7 @@ def create_wordlist(article_text):
         for word in pp.split():
             checkword = ''.join(e for e in word.lower() if e.isalpha())
             if checkword not in stop and word.lower() not in dupes and len(checkword) > 2:
-                paralist[checkword] = (korjenuj(transformiraj(checkword)))
+                paralist[checkword] = korjenuj(transformiraj(checkword))
             dupes.append(word.lower())
         wordlist.append(paralist)
     return wordlist

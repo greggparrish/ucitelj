@@ -1,7 +1,7 @@
 import sys
 from app import app, db
 from app.models.users import User, Role, UserRoles
-from app.views.forms import LoginForm, RegistrationForm
+from app.forms.users import LoginForm, RegistrationForm
 from flask import Blueprint, flash, render_template, redirect, url_for, request, jsonify
 from flask_login import login_user, logout_user, current_user, login_required
 

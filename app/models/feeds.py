@@ -33,14 +33,19 @@ class Feed(db.Model):
     checked = db.Column(db.DateTime)
     country = db.Column(db.Enum(*COUNTRY_CHOICES, name="country"))
     feed_type = db.Column(db.Enum(*TYPE_CHOICES, name="feed_type"))
-    logo = db.Column(db.String(250))
+    logo_filename = db.Column(db.String(250), nullable=False)
     name = db.Column(db.String(250), nullable=False)
     rss = db.Column(db.String(250), unique=True, nullable=False)
     slug = db.Column(db.String(250), unique=True, nullable=False)
 
+    def country_choices(self):
+        return [ (c, c) for c in COUNTRY_CHOICES ]
+
+    def type_choices(self):
+        return [ (c, c) for c in TYPE_CHOICES ]
+
     def __repr__(self):
         return '<Feed: {}>'.format(self.name)
-
 
     def update_feed(self, feed):
         '''

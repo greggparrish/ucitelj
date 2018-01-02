@@ -29,6 +29,11 @@ class Config(object):
     USER_LOGIN_TEMPLATE = 'users/login.html'
     USER_REGISTER_TEMPLATE = 'users/register.html'
 
+    UPLOADS_DEFAULT_DEST = 'app/static/public/uploads/'
+    UPLOADS_DEFAULT_URL = '/static/public/uploads/'
+    UPLOADS_IMAGE_DEST = 'app/static/public/uploads/images/'
+    UPLOADS_IMAGE_URL = '/static/public/uploads/images/'
+
 
 class DevConfig(Config):
     DEVELOPMENT = True

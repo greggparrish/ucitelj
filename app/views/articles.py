@@ -5,7 +5,7 @@ from flask import Blueprint, render_template
 
 from app import app, db
 from app.models.articles import Article, ArticleText
-from app.models.words import Definition
+from app.models.words import Definition, create_glossary
 
 article_bp = Blueprint('articles', __name__)
 
@@ -29,9 +29,9 @@ def show(article_id, article_slug):
         try:
             glossary = json.load(open(g_dir+article_id+'.json'))
         except:
-            glossary = Definition().create_glossary(article_id, at)
+            glossary = create_glossary(article_id, at)
     else:
-        glossary = Definition().create_glossary(article_id, at)
+        glossary = create_glossary(article_id, at)
 
     return render_template('articles/show.html', a=a, at=at, glossary=glossary)
 

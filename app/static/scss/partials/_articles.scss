@@ -1,15 +1,23 @@
-.text-column {
-  p {
-    font-size: 1.3em;
+#article-wrapper {
+  padding-bottom: 20px;
+  .article-text {
+    p {
+      font-size: 1.3em;
+      line-height: 1.8em;
+    }
   }
-  ul.glossary {
-    color: $dark_grey;
-    text-align: center;
-    padding: 30px 10px;
-    line-height: 1.8em;
-    span.hr-term { font-weight: 700; }
-    span.en-term { }
+  .article-glossary {
+    ul.glossary {
+      margin-top: 5px;
+      color: $dark_grey;
+      text-align: center;
+      line-height: 1.8em;
+      span.hr-term { font-weight: 700; }
+      span.en-term { }
+      padding: 30px 10px;
+      @media only screen and (min-width: 767px) {
+        padding: 0;
+      }
+    }
   }
 }
-
-

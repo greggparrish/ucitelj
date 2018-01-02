@@ -9,8 +9,14 @@
     |
     <a href='{{a.permalink}}' target='_blank'>original article</a>
   </p>
-  <div class='col-xs-12 col-md-9 text-column'>
     {% for p in at.split('</p><p>') %}
+  <div class='col-xs-12' id='article-wrapper'>
+
+  <div class='col-xs-12 col-md-6 article-text'>
+      <p>{{ p|safe }}</p>
+  </div>
+
+  <div class='col-xs-12 col-md-6 article-glossary'>
       {% if glossary.paragraphs[loop.index] %}
         {% for def in glossary.paragraphs[loop.index].definitions %}
           <ul class='list-inline glossary'>  
@@ -23,9 +29,10 @@
           </ul>  
         {% endfor %}
       {% endif %}
-      <p>{{ p|safe }}</p>
-    {% endfor %}
   </div>
+
+  </div>
+    {% endfor %}
   <div class='col-xs-12 col-md-2'>
   </div>
 {% endblock %}

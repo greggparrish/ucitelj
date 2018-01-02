@@ -14,7 +14,7 @@
 				<li><a href="{{ url_for('feeds.index') }}">feeds</a></li>
 				<li><a href="{{ url_for('articles.index') }}">articles</a></li>
         {% if current_user.is_authenticated %}
-        <li><a href="{{ url_for('users.profile') }}">{{ current_user.username }}</a></li>
+          <li><a href="{{ url_for('users.profile') }}">{{ current_user.username }}</a></li>
           <li><a href="{{ url_for('users.logout') }}">logout</a></li>
         {% else %}
           <li><a href="{{ url_for('users.login')  }}">login</a></li>

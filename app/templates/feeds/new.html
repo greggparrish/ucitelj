@@ -1,0 +1,65 @@
+{% extends "layouts/base.html" %}
+{% block title %}New Feed: {%endblock %}
+
+{% block content %}
+  {% if current_user.is_authenticated and current_user.has_role('admin') %}
+    <h1>New Feed</h1>
+    <form action="" method="post" name="feed" enctype="multipart/form-data">
+      {{ form.csrf_token() }}
+      <div class='form-group'>
+        {{ form.name(class='form-control', placeholder='name') }}
+			  {% for error in form.name.errors %}
+				  <span style="color: red;">[{{ error }}]</span>
+				{% endfor %}
+      </div>
+      <div class='form-group'>
+        {{ form.body_tag(class='form-control', placeholder='body tag: ex div#article-content') }}
+			  {% for error in form.body_tag.errors %}
+				  <span style="color: red;">[{{ error }}]</span>
+				{% endfor %}
+      </div>
+      <div class='form-group'>
+        {{ form.rss(class='form-control', placeholder='rss') }}
+			  {% for error in form.rss.errors %}
+				  <span style="color: red;">[{{ error }}]</span>
+				{% endfor %}
+      </div>
+      <div class='form-group'>
+        {{ form.logo.name }}
+        {{ form.logo(class='form-control', placeholder='logo') }}
+			  {% for error in form.logo.errors %}
+				  <span style="color: red;">[{{ error }}]</span>
+				{% endfor %}
+      </div>
+      <div class='form-group'>
+        {{ form.country.label }}
+        {{ form.country }}
+			  {% for error in form.country.errors %}
+				  <span style="color: red;">[{{ error }}]</span>
+				{% endfor %}
+      </div>
+      <div class='form-group'>
+        {{ form.feed_type.label }}
+        {{ form.feed_type }}
+			  {% for error in form.feed_type.errors %}
+				  <span style="color: red;">[{{ error }}]</span>
+				{% endfor %}
+      </div>
+      <div class='form-group'>
+        {{ form.about(class='form-control', placeholder='about') }}
+			  {% for error in form.about.errors %}
+				  <span style="color: red;">[{{ error }}]</span>
+				{% endfor %}
+      </div>
+      <div class='form-group'>
+        {{ form.submit(class='btn btn-primary') }}
+      </div>
+    </form>
+  {% endif %}
+{% endblock %}
+
+
+{% block extra_js %}
+{% endblock %}
+
+

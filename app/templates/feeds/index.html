@@ -3,12 +3,14 @@
 
 {% block content %}
   {% if current_user.is_authenticated and current_user.has_role('admin') %}
-    is admin
+    <ul class='list-unstyled admin'>
+      <li><a href="{{ url_for('feeds.new') }}">add new</a></li>
+    </ul>
   {% endif %}
   {% for f in feeds %}
 		<div class='col-xs-12 feed-list'>
 			<div class='col-xs-6 col-sm-2'>
-				<a href="{{ url_for('feeds.show', feed_slug=f.slug) }}"><img src="/{{ f.logo }}" /></a>
+				<a href="{{ url_for('feeds.show', feed_slug=f.slug) }}"><img src="/static/public/uploads/images/{{ f.logo_filename }}" /></a>
 			</div>
 			<div class='col-xs-6 col-sm-10 feed-item'>
 					<span class='subButton btn {% if f.id in user_subs %}subbed{%endif%}' data-feed='{{ f.id }}' data-sub='{% if f.id in user_subs %}unsub{% else %}sub{%endif%}'> + </span>
@@ -25,7 +27,9 @@
 	$(".subButton").click(function () {
 		var feed_id = $(this).attr("data-feed");
 		var sub_type  = $(this).attr("data-sub");
+    var setSub = (sub_type == 'sub') ? 'unsub' : 'sub';
 		$.get('/users/subscriptions/', {feed_id : feed_id, sub_type : sub_type}, function(data){ });
+    $(this).attr('data-sub', setSub);
 		$(this).toggleClass('subbed');
 		return false;
 	});

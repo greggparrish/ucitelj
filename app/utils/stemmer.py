@@ -42,7 +42,8 @@ def create_wordlist(article_text):
     in groups according to paragraph order
     '''
     wordlist = []
-    dupes = []
+    checked = []
+    dupe_stems = []
     htmltags = re.compile('<.*?>')
 
     for paragraph in article_text.split('<p>'):
@@ -50,8 +51,11 @@ def create_wordlist(article_text):
         paralist = dict()
         for word in pp.split():
             checkword = ''.join(e for e in word.lower() if e.isalpha())
-            if checkword not in stop and word.lower() not in dupes and len(checkword) > 2:
-                paralist[checkword] = korjenuj(transformiraj(checkword))
-            dupes.append(word.lower())
+            if checkword not in stop and word.lower() not in checked and len(checkword) > 2:
+                checked.append(word.lower())
+                stem = korjenuj(transformiraj(checkword))
+                if stem not in dupe_stems:
+                    paralist[checkword] = stem
+            dupe_stems.append(stem.lower())
         wordlist.append(paralist)
     return wordlist

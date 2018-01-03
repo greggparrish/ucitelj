@@ -105,13 +105,15 @@ def create_glossary(a_id, article_text):
                 word_defs = Definition.query.join(Definition.hr_words, aliased=True).filter(HrWord.term.like("{}%".format(para[word][:-1]))).limit(3).all()
 
             if word_defs:
-                ens = set([ w.en_words.term for w in word_defs ])
-                def_group = {
-                    'def_id' : word_defs[0].id,
-                    'hr_word' : word_defs[0].hr_words.term,
-                    'en_words' : [ w for w in ens ]
-                    }
-                paralist.append(def_group)
+                hrs = set([ w.hr_words.term for w in word_defs ])
+                for hr in hrs:
+                    ens = set([ wd.en_words.term for wd in word_defs if wd.hr_words.term == hr ])
+                    def_group = {
+                        'def_id' : word_defs[0].hr_words.id,
+                        'hr_word' : hr,
+                        'en_words' : [ w for w in ens ]
+                        }
+                    paralist.append(def_group)
         glossary.append({
             'paragraph' : paracount,
             'definitions' : [paralist]

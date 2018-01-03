@@ -7,13 +7,13 @@
     position: relative;
     h3 {
       float: left;
-      margin-left: 20px;
     }
     span.subButton {
       position: absolute;
-      float: left;
       padding: 0;
-      color: $light_grey;
+      padding-right: 20px;
+      float: left;
+      color: $lightest_grey;
       font-size: 1.5em;
       margin-top: 13px;
       &.subbed, &:hover {

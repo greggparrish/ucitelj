@@ -1,0 +1,12 @@
+form {
+  max-width: 500px;
+  img {
+    max-width: 150px;
+    margin: 10px 0;
+    display: block;
+    clear: both;
+  }
+  textarea.form-control {
+    height: 120px;
+  }
+}

@@ -10,10 +10,22 @@
     ul.glossary {
       margin-top: 5px;
       color: $dark_grey;
-      text-align: center;
-      line-height: 1.8em;
-      span.hr-term { font-weight: 700; }
-      span.en-term { }
+      line-height: 2em;
+      li {
+          border-bottom: 1px dotted transparent;
+          @include fade_transition;
+        &:hover {
+          border-bottom: 1px dotted $red;
+          &:after {
+            position: absolute;
+            margin-top: -10px;
+          }
+        }
+        span {
+          &.hr-term { font-weight: 700; }
+          &.en-term { }
+        }
+      }
       padding: 30px 10px;
       @media only screen and (min-width: 767px) {
         padding: 0;

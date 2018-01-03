@@ -36,6 +36,7 @@ class Feed(db.Model):
     logo_filename = db.Column(db.String(250), nullable=False)
     name = db.Column(db.String(250), nullable=False)
     rss = db.Column(db.String(250), unique=True, nullable=False)
+    users = db.relationship("Subscription", backref='feeds')
     slug = db.Column(db.String(250), unique=True, nullable=False)
 
     def country_choices(self):
@@ -59,7 +60,6 @@ class Feed(db.Model):
         if feed_response.status_code == 200:
             posts = feedparser.parse(feed_response.content)
             for p in posts.entries:
-                print('parsed {}'.format(p.published_parsed), file=sys.stdout)
                 title = p.title
                 date = datetime.fromtimestamp(mktime(p.published_parsed))
                 url = p.link
@@ -73,8 +73,12 @@ class Feed(db.Model):
                             date=date,
                             slug=slug
                             )
-                    db.session.add(new_text)
-                    db.session.commit()
+                    try:
+                        db.session.add(new_text)
+                        db.session.commit()
+                    except IntegrityError:
+                        ''' Article already exists '''
+                        db.session.rollback()
             feed.checked = datetime.now()
             db.session.commit()
             return feed
@@ -89,4 +93,3 @@ class Subscription(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
     feed_id = db.Column(db.Integer, db.ForeignKey('feeds.id', ondelete='CASCADE'), nullable=False)
     __table_args__ = (db.UniqueConstraint("feed_id", "user_id"),)
-

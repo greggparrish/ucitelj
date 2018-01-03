@@ -18,7 +18,7 @@ class Article(db.Model):
     title = db.Column(db.String(250), nullable=False)
     date = db.Column(db.DateTime)
     img_url = db.Column(db.String(250))
-    permalink = db.Column(db.String(250), nullable=False, unique=True)
+    permalink = db.Column(db.String(250), nullable=False)
     slug = db.Column(db.String(250), nullable=False, unique=True)
     text = db.relationship("ArticleText", uselist=False, backref="article")
 
@@ -54,16 +54,24 @@ class ArticleText(db.Model):
                 bt = soup.find(e, id=n)
             else:
                 bt = soup.find(e, class_=n)
-            ps = bt.find_all('p')
-            for p in ps:
-                if p.text and p.text != '</p>' and '[CDATA' not in p:
-                    at += "<p>{}</p>".format(p.text.strip())
-            new_text = ArticleText(
-                    article_id=article.id,
-                    text=at
-                    )
-            db.session.add(new_text)
-            db.session.commit()
+            if bt:
+                ps = bt.find_all('p')
+                if ps:
+                    for p in ps:
+                        if p.text and p.text != '</p>' and '[CDATA' not in p.text:
+                            at += "<p>{}</p>".format(p.text.strip())
+                    new_text = ArticleText(
+                            article_id=article.id,
+                            text=at
+                            )
+                    db.session.add(new_text)
+                    db.session.commit()
+                else:
+                    ''' No body text for this article '''
+                    at = False
+            else:
+                ''' Article has format different from body_tag string '''
+                at = False
             return at
 
     def __str__(self):

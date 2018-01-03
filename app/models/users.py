@@ -3,6 +3,7 @@ from flask_user import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from app import app, db
+from app.models.feeds import Subscription
 
 
 class User(db.Model, UserMixin):
@@ -17,6 +18,7 @@ class User(db.Model, UserMixin):
     first_name = db.Column(db.String(50), nullable=True, default='')
     last_name = db.Column(db.String(50), nullable=True, default='')
     roles = db.relationship('Role', secondary='user_roles', backref=db.backref('users', lazy='dynamic'))
+    subscriptions = db.relationship("Subscription", backref='users')
 
 
     def __repr__(self):

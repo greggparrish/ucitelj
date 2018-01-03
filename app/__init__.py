@@ -17,7 +17,7 @@ from config import Config
 
 db = SQLAlchemy()
 migrate = Migrate()
-login = LoginManager()
+login_manager = LoginManager()
 mail = Mail()
 babel = Babel()
 
@@ -28,12 +28,13 @@ app.config.from_object(Config)
 """ INIT UTILS """
 db.init_app(app)
 migrate.init_app(app, db)
-login.init_app(app)
+login_manager.init_app(app)
 mail.init_app(app)
 babel.init_app(app)
 csrf = CSRFProtect(app)
-images = UploadSet('images', IMAGES)
+images = UploadSet('feeds', IMAGES)
 configure_uploads(app, images)
+
 
 
 """ BLUEPRINTS """
@@ -52,7 +53,6 @@ app.register_blueprint(feed_bp, url_prefix='/feeds')
 from app.views.users import user_bp
 from app.models.users import User
 app.register_blueprint(user_bp, url_prefix='/users')
-
 
 
 """ USER MGMT """
@@ -74,6 +74,6 @@ css = Bundle(
 assets.register('js_all', js)
 assets.register('css_all', css)
 
-@login.user_loader
+@login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)

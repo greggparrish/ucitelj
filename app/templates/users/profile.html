@@ -3,12 +3,17 @@
 
 {% block content %}
   <h1>{{ current_user.username }}</h1>
+  <h2>Feeds subs</h2>
+  <ul class='list-unstyled'>
+    {% for s in profile.subs %}
+    <li id='sub_{{ s.feeds.id }}'>
+      <a href='{{ url_for('feeds.show', feed_slug=s.feeds.slug) }}'>{{ s.feeds.name }}</a>
+		  <span class='subButton btn subbed' data-feed='{{ s.feeds.id }}' data-sub='unsub'> + </span>
+    </li>
+    {% endfor %}
+  </ul>
 {% endblock %}
 
 
 {% block extra_js %}
 {% endblock %}
-
-
-
-

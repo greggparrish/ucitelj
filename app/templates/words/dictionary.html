@@ -1,0 +1,17 @@
+{% extends "layouts/base.html" %}
+{% block title %}Dictionary: {%endblock %}
+
+{% block content %}
+  <div id='dict_form'>
+    <div id='dict_choice'>
+      <span class='dict_dir active' id='hr_en'>HR</span> | <span class='dict_dir' id='en_hr'>EN</span>
+    </div>
+    <input name='' type='text' id='autocomplete' class='form-control input-lg' placeholder='search' value=''/>
+  </div>
+  <div id='search_results'></div>
+{% endblock %}
+
+{% block extra_js %}
+{% endblock %}
+
+

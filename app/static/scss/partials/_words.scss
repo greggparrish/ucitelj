@@ -1,0 +1,40 @@
+.ui-helper-hidden-accessible {
+  display: none;
+}
+input#autocomplete {
+  max-width: 500px;
+}
+div#search_results {
+  @include centerobj;
+  text-align: center;
+  margin: 20px;
+  input {
+  }
+}
+
+#dict_form {
+  max-width: 500px;
+  @include centerobj;
+  #dict_choice {
+    color: $light_grey;
+    height: 30px;
+    .dict_dir {
+      &:hover {
+        color: $light_blue;
+      }
+      &.active {
+        @include fade_transition;
+        color: $black;
+        font-size: 1.4em;
+      }
+    }
+  }
+}
+ul#ui-id-1 {
+  padding-top: 5px;
+  list-style-type: none;
+  color: $light_grey;
+  li:hover {
+    color: $black;
+  }
+}

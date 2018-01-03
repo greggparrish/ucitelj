@@ -9,3 +9,21 @@ $(".subButton").click(function () {
   $('#sub_'+feed_id).remove();
   return false;
 });
+
+
+// Autocomplete for dictionary
+$(".dict_dir").click(function () {
+  $(".dict_dir").removeClass('active');
+  $(this).addClass('active');
+});
+$('#autocomplete').autocomplete({
+  source:function(request, response) {
+    $.getJSON("/words/define", { q_word: request.term, dict_dir: $('.dict_dir.active').attr('id')}, function(data) {
+      response(data.deflist);
+    });
+},
+  minLength: 2,
+  select: function(event, ui) {
+    $('#search_results').text(ui.item.label);
+  }
+});

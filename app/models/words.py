@@ -39,6 +39,20 @@ class Definition(db.Model):
     def __repr__(self):
         return '{} :: {}'.format(self.hr_words.term, self.en_words.term)
 
+    def en_hr_to_json(self):
+        return dict(
+                def_id=self.id,
+                value=self.en_words.term,
+                label="{} : {}".format(self.en_words.term, self.hr_words.term)
+                )
+
+    def hr_en_to_json(self):
+        return dict(
+                def_id=self.id,
+                value=self.hr_words.term,
+                label="{} : {}".format(self.hr_words.term, self.en_words.term)
+                )
+
 class HrWord(db.Model):
     '''
     Croatian word: id, term

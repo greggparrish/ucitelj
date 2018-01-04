@@ -11,6 +11,18 @@ $(".subButton").click(function () {
 });
 
 
+// Add/rm word from user wordbank
+$(".hr-term").click(function () {
+  var word_id = $(this).attr('id');
+  var add_type = $(this).attr("data-add");
+  var setAdd = (add_type == 'add') ? 'rm' : 'add';
+  $.get('/words/wordbank/add/', {word_id : word_id, add_type : add_type}, function(data){ });
+  $(this).attr('data-add', setAdd);
+  $(this).toggleClass('wb');
+  return false;
+});
+
+
 // Autocomplete for dictionary
 $(".dict_dir").click(function () {
   $(".dict_dir").removeClass('active');

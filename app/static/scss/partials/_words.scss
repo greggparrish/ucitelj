@@ -18,12 +18,12 @@ div#search_results {
   #dict_choice {
     color: $light_grey;
     height: 30px;
+    margin-bottom: 10px;
     .dict_dir {
       &:hover {
         color: $light_blue;
       }
       &.active {
-        @include fade_transition;
         color: $black;
         font-size: 1.4em;
       }

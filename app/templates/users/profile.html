@@ -3,15 +3,29 @@
 
 {% block content %}
   <h1>{{ current_user.username }}</h1>
-  <h2>Feeds subs</h2>
-  <ul class='list-unstyled'>
-    {% for s in profile.subs %}
-    <li id='sub_{{ s.feeds.id }}'>
-      <a href='{{ url_for('feeds.show', feed_slug=s.feeds.slug) }}'>{{ s.feeds.name }}</a>
-		  <span class='subButton btn subbed' data-feed='{{ s.feeds.id }}' data-sub='unsub'> + </span>
-    </li>
-    {% endfor %}
-  </ul>
+  <div class='col-xs-6'>
+    <h2>Saved feeds</h2>
+    <ul class='list-unstyled feed-list'>
+      {% for s in profile.subs %}
+      <li id='sub_{{ s.feeds.id }}'>
+        <a href='{{ url_for('feeds.show', feed_slug=s.feeds.slug) }}'>{{ s.feeds.name }}</a>
+        <span class='subButton btn subbed' data-feed='{{ s.feeds.id }}' data-sub='unsub'> + </span>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div class='col-xs-6'>
+    <h2>Recent in <a href=''>Wordbank</a></h2>
+      <ul class='list-unstyled glossary'>
+        {% for d in profile.wb %}
+          <li id='{{ d.def_id }}' class='add_word'>
+              <span class='hr-term'>{{ d.hr_word }}: </span>
+              <span class='en-term'>{{ d.en_words|join(', ') }}</span>
+          </li>
+        {% endfor %}
+      </ul>
+  </div>
 {% endblock %}
 
 

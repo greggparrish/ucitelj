@@ -84,12 +84,3 @@ class Feed(db.Model):
             return feed
 
 
-class Subscription(db.Model):
-    '''
-    M2M table linking users with feeds
-    '''
-    __tablename__ = 'subscriptions'
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
-    feed_id = db.Column(db.Integer, db.ForeignKey('feeds.id', ondelete='CASCADE'), nullable=False)
-    __table_args__ = (db.UniqueConstraint("feed_id", "user_id"),)

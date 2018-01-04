@@ -7,29 +7,35 @@
     }
   }
   .article-glossary {
-    ul.glossary {
-      margin-top: 5px;
-      color: $dark_grey;
-      line-height: 2em;
-      li {
-          border-bottom: 1px dotted transparent;
-          @include fade_transition;
+  }
+}
+ul.glossary {
+  margin-top: 5px;
+  color: $dark_grey;
+  line-height: 2em;
+  li {
+    span {
+      &.hr-term {
+        font-weight: 700;
+        border-bottom: 1px dotted transparent;
+        @include fade_transition;
         &:hover {
-          border-bottom: 1px dotted $red;
+          color: $green;
+          border-bottom: 1px dotted $green;
           &:after {
             position: absolute;
             margin-top: -10px;
           }
         }
-        span {
-          &.hr-term { font-weight: 700; }
-          &.en-term { }
+        &.wb{
+          color: $green;
+          &:hover {
+            color: $red;
+            border-bottom: 1px dotted $red;
+          }
         }
       }
-      padding: 30px 10px;
-      @media only screen and (min-width: 767px) {
-        padding: 0;
-      }
+      &.en-term { margin-right: 10px;}
     }
   }
 }

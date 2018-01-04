@@ -3,8 +3,6 @@ from flask_user import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from app import app, db
-from app.models.feeds import Subscription
-
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
@@ -86,3 +84,23 @@ class UserRoles(db.Model):
 
     def __repr__(self):
         return '<User role: {} {}>'.format(self.user.username, self.role.name)
+
+class Subscription(db.Model):
+    '''
+    M2M table linking users with feeds
+    '''
+    __tablename__ = 'subscriptions'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    feed_id = db.Column(db.Integer, db.ForeignKey('feeds.id', ondelete='CASCADE'), nullable=False)
+    __table_args__ = (db.UniqueConstraint("feed_id", "user_id"),)
+
+class WordBank(db.Model):
+    '''
+    M2M table allowing users to save specific words
+    '''
+    __tablename__ = 'wordbanks'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    hr_word_id = db.Column(db.Integer, db.ForeignKey('hr_words.id', ondelete='CASCADE'), nullable=False)
+    __table_args__ = (db.UniqueConstraint("hr_word_id", "user_id"),)

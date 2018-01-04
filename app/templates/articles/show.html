@@ -1,15 +1,15 @@
 {% extends "layouts/base.html" %}
-{% block title %}Article: {{ a.title }} : {%endblock %}
+{% block title %}Article: {{ article.a.title }} : {%endblock %}
 
 {% block content %}
-<h1>{{ a.title }}</h1>
-  <p>{{ a.date.strftime('%b %d, %Y') }}</p>
+<h1>{{ article.a.title }}</h1>
+  <p>{{ article.a.date.strftime('%b %d, %Y') }}</p>
   <p>
-    From: <a href='/feeds/{{ a.feed.slug }}'>{{ a.feed.name }}</a>
+    From: <a href='/feeds/{{ article.a.feed.slug }}'>{{ article.a.feed.name }}</a>
     |
-    <a href='{{a.permalink}}' target='_blank'>original article</a>
+    <a href='{{article.a.permalink}}' target='_blank'>original article</a>
   </p>
-    {% for p in at.split('</p><p>') %}
+    {% for p in article.at.split('</p><p>') %}
   <div class='col-xs-12' id='article-wrapper'>
 
   <div class='col-xs-12 col-md-6 article-text'>
@@ -17,14 +17,15 @@
   </div>
 
   <div class='col-xs-12 col-md-6 article-glossary'>
-      {% if glossary.paragraphs[loop.index] %}
-        {% for def in glossary.paragraphs[loop.index].definitions %}
+      {% if article.glossary.paragraphs[loop.index] %}
+        {% for def in article.glossary.paragraphs[loop.index].definitions %}
           <ul class='list-inline glossary'>  
             {% for d in def %}
-            <li id='{{ d.def_id }}'>
-                <span class='hr-term'>{{ d.hr_word }}: </span>
-                <span class='en-term'>{{ d.en_words|join(', ') }}</span>
-            </li>
+            <li>
+                {{ wb_class }}
+                <span id='{{ d.def_id }}' class='hr-term{% if d.def_id in article.wb %} wb{% endif %}'  data-add='{% if d.def_id in article.wb %}rm{% else %}add{%endif%}'>{{ d.hr_word }}: </span>
+                  <span class='en-term'>{{ d.en_words|join(', ') }}</span>
+              </li>
             {% endfor %}
           </ul>  
         {% endfor %}
@@ -40,6 +41,3 @@
 
 {% block extra_js %}
 {% endblock %}
-
-
-

@@ -3,9 +3,9 @@ from flask import Blueprint, flash, render_template, redirect, url_for, request,
 from flask_login import login_user, logout_user, current_user, login_required
 
 from app import app, db
-from app.models.users import User, Role, UserRoles
-from app.models.feeds import Subscription
+from app.models.users import User, Role, UserRoles, Subscription, WordBank
 from app.forms.users import LoginForm, RegistrationForm
+from app.models.words import Definition, format_glossary
 
 
 user_bp = Blueprint('users', __name__)
@@ -46,9 +46,14 @@ def register():
 def profile():
     user = User.query.get(3)
     subs = Subscription.query.options(subqueryload(Subscription.feeds)).filter_by(user_id=user.id).all()
+    wbq = WordBank.query.with_entities(WordBank.hr_word_id).filter_by(user_id=user.id).all()
+    wbl = Definition.query.options(subqueryload(Definition.hr_words)).filter(Definition.hr_word_id.in_(wbq)).all()
+    wb = format_glossary(wbl)
+    wbs = sorted(wb, key=lambda k: k['hr_word'])
     profile ={
             'user': user,
-            'subs':subs
+            'subs':subs,
+            'wb':wbs
             }
     return render_template('users/profile.html', profile=profile)
 

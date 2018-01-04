@@ -1,9 +1,10 @@
-import sys
 import os
 import json
 from flask import Blueprint, render_template
+from flask_login import current_user
 
 from app import app, db
+from app.models.users import WordBank
 from app.models.articles import Article, ArticleText
 from app.models.words import Definition, create_glossary
 
@@ -16,6 +17,7 @@ def index(page=1):
 
 @article_bp.route('/<article_id>/<article_slug>')
 def show(article_id, article_slug):
+    wb = []
     a = Article.query.get(article_id)
     article_text = ArticleText.query.filter(ArticleText.article_id==a.id).first()
     if article_text != None:
@@ -33,5 +35,16 @@ def show(article_id, article_slug):
     else:
         glossary = create_glossary(article_id, at)
 
-    return render_template('articles/show.html', a=a, at=at, glossary=glossary)
+    ''' Get user saved words if logged in '''
+    if current_user.is_authenticated:
+        wbq = WordBank.query.with_entities(WordBank.hr_word_id).filter_by(user_id=current_user.id).all()
+    if wbq:
+        wb = [ w[0] for w in wbq ]
+    article = {
+            'a': a,
+            'at': at,
+            'glossary': glossary,
+            'wb': wb
+            }
+    return render_template('articles/show.html', article=article)
 

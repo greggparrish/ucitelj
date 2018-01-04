@@ -37,7 +37,7 @@ class Definition(db.Model):
     guess = db.Column(db.Boolean(), nullable=True)
 
     def __repr__(self):
-        return '{} :: {}'.format(self.hr_words.term, self.en_words.term)
+        return '{}: {}'.format(self.hr_words.term, self.en_words.term)
 
     def en_hr_to_json(self):
         return dict(
@@ -62,6 +62,7 @@ class HrWord(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     term = db.Column(db.String(), unique=True, nullable=False)
     definitions = db.relationship('Definition', backref='hr_words', lazy='dynamic')
+    users = db.relationship("WordBank", backref='hr_word')
 
     def __repr__(self):
         return '<HR Word {}>'.format(self.term)
@@ -105,23 +106,40 @@ def create_glossary(a_id, article_text):
                 word_defs = Definition.query.join(Definition.hr_words, aliased=True).filter(HrWord.term.like("{}%".format(para[word][:-1]))).limit(3).all()
 
             if word_defs:
-                hrs = set([ w.hr_words.term for w in word_defs ])
-                for hr in hrs:
-                    ens = set([ wd.en_words.term for wd in word_defs if wd.hr_words.term == hr ])
-                    def_group = {
-                        'def_id' : word_defs[0].hr_words.id,
-                        'hr_word' : hr,
-                        'en_words' : [ w for w in ens ]
-                        }
-                    paralist.append(def_group)
+                for w in word_defs:
+                    paralist.append(w)
+
+        para_all = format_glossary(paralist)
         glossary.append({
             'paragraph' : paracount,
-            'definitions' : [paralist]
+            'definitions' : [para_all]
             })
         paracount += 1
+    print(glossary, file=sys.stdout)
     jg = write_json_glossary(a_id, glossary)
     if jg:
         at = ArticleText.query.filter(ArticleText.article_id==a_id).first()
         at.has_dict = True
         db.session.commit()
     return jg
+
+
+def format_glossary(wbl):
+    '''
+    Take list of Definition query results
+    return list with concatenated en_words for each unique hr_word
+    ex: [{'def_id': 16300, 'hr_word': 'stanje', 'en_words': ['state', 'condition']}, ...]
+    '''
+    wb = []
+    hrs = set([ w.hr_words.term for w in wbl ])
+    for hr in hrs:
+        def_group=[]
+        ens = set([ wd.en_words.term for wd in wbl if wd.hr_words.term == hr ])
+        word_id = [ wd.hr_words.id for wd in wbl if wd.hr_words.term == hr ]
+        def_group = {
+            'def_id' : word_id[0],
+            'hr_word' : hr,
+            'en_words' : [ w for w in ens ]
+            }
+        wb.append(def_group)
+    return wb

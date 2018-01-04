@@ -54,8 +54,8 @@ def create_wordlist(article_text):
             if checkword not in stop and word.lower() not in checked and len(checkword) > 2:
                 checked.append(word.lower())
                 stem = korjenuj(transformiraj(checkword))
-                if stem not in dupe_stems:
+                if stem and stem not in dupe_stems:
                     paralist[checkword] = stem
-            dupe_stems.append(stem.lower())
+                    dupe_stems.append(stem.lower())
         wordlist.append(paralist)
     return wordlist

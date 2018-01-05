@@ -6,6 +6,8 @@ from app.models.articles import Article, ArticleText
 from app.utils.stemmer import create_wordlist
 from app.utils.glossary import write_json_glossary
 
+PRONOUNS = ['ja','ti','on','ona','ono','mi','vi','oni','one','ona']
+VERB_TENSES = ['present','past', 'future', 'conditional', 'imperative']
 
 class WordRole(db.Model):
     '''

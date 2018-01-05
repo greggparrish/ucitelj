@@ -77,3 +77,4 @@ assets.register('css_all', css)
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
+

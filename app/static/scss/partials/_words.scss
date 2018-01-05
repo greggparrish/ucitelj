@@ -38,3 +38,9 @@ ul#ui-id-1 {
     color: $black;
   }
 }
+.verb-list {
+  display: none;
+  &.active {
+    display: block;
+  }
+}

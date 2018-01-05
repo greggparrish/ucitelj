@@ -22,8 +22,7 @@
           <ul class='list-inline glossary'>  
             {% for d in def %}
             <li>
-                {{ wb_class }}
-                <span id='{{ d.def_id }}' class='hr-term{% if d.def_id in article.wb %} wb{% endif %}'  data-add='{% if d.def_id in article.wb %}rm{% else %}add{%endif%}'>{{ d.hr_word }}: </span>
+                <span id='{{ d.def_id }}' class='hr-term{% if d.def_id in article.wb %} wb{% endif %}' data-add='{% if d.def_id in article.wb %}rm{% else %}add{%endif%}'>{{ d.hr_word }}: </span>
                   <span class='en-term'>{{ d.en_words|join(', ') }}</span>
               </li>
             {% endfor %}

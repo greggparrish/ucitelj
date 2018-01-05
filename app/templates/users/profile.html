@@ -15,17 +15,20 @@
     </ul>
   </div>
 
-  <div class='col-xs-6'>
-    <h2>Recent in <a href=''>Wordbank</a></h2>
-      <ul class='list-unstyled glossary'>
-        {% for d in profile.wb %}
-          <li id='{{ d.def_id }}' class='add_word'>
-              <span class='hr-term'>{{ d.hr_word }}: </span>
-              <span class='en-term'>{{ d.en_words|join(', ') }}</span>
-          </li>
-        {% endfor %}
-      </ul>
-  </div>
+  {% if profile.wb %}
+    <div class='col-xs-6'>
+      <h2>Wordbank</h2>
+        <ul class='list-unstyled glossary'>
+          {% for d in profile.wb %}
+            <li id='{{ d.def_id }}' class='add_word'>
+                <span id='{{ d.def_id }}' class='hr-term wb' data-add='rm'>{{ d.hr_word }}: </span>
+                <span class='en-term'>{{ d.en_words|join(', ') }}</span>
+            </li>
+          {% endfor %}
+        </ul>
+        <a href="">all >></a>
+    </div>
+  {% endif %}
 {% endblock %}
 
 

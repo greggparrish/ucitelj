@@ -6,7 +6,7 @@ from flask_login import current_user
 from app import app, db
 from app.models.users import WordBank
 from app.models.articles import Article, ArticleText
-from app.models.words import Definition, create_glossary
+from app.models.practice import Definition, create_glossary
 
 article_bp = Blueprint('articles', __name__)
 
@@ -35,7 +35,7 @@ def show(article_id, article_slug):
     else:
         glossary = create_glossary(article_id, at)
 
-    ''' Get user saved words if logged in '''
+    # Get user saved words if logged in
     if current_user.is_authenticated:
         wbq = WordBank.query.with_entities(WordBank.hr_word_id).filter_by(user_id=current_user.id).all()
     if wbq:

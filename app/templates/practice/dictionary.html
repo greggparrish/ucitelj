@@ -1,0 +1,24 @@
+{% extends "layouts/base.html" %}
+{% block title %}Dictionary: {%endblock %}
+
+{% block content %}
+<div id='dict_form'>
+  <div id='dict_choice'>
+    <span class='dict_dir active' id='hr_en'>HR</span> | <span class='dict_dir' id='en_hr'>EN</span>
+  </div>
+  <ul class='list-inline' id='char-list'>
+    <li class='extraCharacter'>č</li>  
+    <li class='extraCharacter'>ć</li>  
+    <li class='extraCharacter'>đ</li> 
+    <li class='extraCharacter'>š</li>  
+    <li class='extraCharacter'>ž</li>
+  </ul>
+  <input name='' type='text' id='autocomplete' class='form-control input-lg' placeholder='search' value=''/>
+</div>
+<ul class='list-inline glossary dictionary' id='search_results'></ul>
+{% endblock %}
+
+{% block extra_js %}
+{% endblock %}
+
+

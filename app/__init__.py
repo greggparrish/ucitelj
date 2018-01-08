@@ -21,11 +21,11 @@ login_manager = LoginManager()
 mail = Mail()
 babel = Babel()
 
-""" INIT APP """
+# INIT APP
 app = Flask(__name__)
 app.config.from_object(Config)
 
-""" INIT UTILS """
+# INIT UTILS
 db.init_app(app)
 migrate.init_app(app, db)
 login_manager.init_app(app)
@@ -36,13 +36,12 @@ images = UploadSet('feeds', IMAGES)
 configure_uploads(app, images)
 
 
-
-""" BLUEPRINTS """
+# BLUEPRINTS
 from app.views.static import static as static_bp
 app.register_blueprint(static_bp)
 
-from app.views.words import word_bp
-app.register_blueprint(word_bp, url_prefix='/words')
+from app.views.practice import practice_bp
+app.register_blueprint(practice_bp, url_prefix='/practice')
 
 from app.views.articles import article_bp
 app.register_blueprint(article_bp, url_prefix='/articles')
@@ -55,11 +54,11 @@ from app.models.users import User
 app.register_blueprint(user_bp, url_prefix='/users')
 
 
-""" USER MGMT """
+# USER MGMT
 db_adapter = SQLAlchemyAdapter(db, User)
 user_manager = UserManager(db_adapter, app)
 
-""" ASSETS """
+# ASSETS
 assets = Environment(app)
 assets.url = app.static_url_path
 js = Bundle(

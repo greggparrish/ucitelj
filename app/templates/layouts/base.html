@@ -17,7 +17,8 @@
   <body>
       {% include "shared/navbar.html" %}
       {% include "shared/header.html" %}
-    <div class="container">
+    {% set curr_page = request.endpoint.split('.') %}
+    <div class="container {{ curr_page[0] }} {{ curr_page[1] }}">
       {% with messages = get_flashed_messages() %}
         {% if messages %}
           <ul>

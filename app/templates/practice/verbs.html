@@ -1,0 +1,90 @@
+{% extends "layouts/base.html"%}
+{% block title %}Verb practice: {%endblock %}
+
+{% block content %}
+<div id='verblistContainer' class='col-xs-12 col-md-8'>
+  <form>
+    <input id='answerBox' name='answer' type='text' id='autocomplete' class='form-control input-lg' placeholder='answer' value=''/>
+    <ul class='list-inline' id='char-list'>
+      <li class='extraCharacter'>č</li>  
+      <li class='extraCharacter'>ć</li>  
+      <li class='extraCharacter'>đ</li> 
+      <li class='extraCharacter'>š</li>  
+      <li class='extraCharacter'>ž</li>
+    </ul>
+    <input class="btn btn-success" id="answerButton" name="submit" type="submit" value="Answer">
+    <input class="btn btn-alert" id="skipButton" name="submit" type="submit" value="Skip">
+  </form>
+</div>
+<div class='col-xs-12 col-sm-4'>
+  <h3>correct</h3>
+  <ul id='lastWord'  class='correct list-unstyled'></ul>
+  <h3>incorrect</h3>
+  <ul id='lastWord' class='incorrect list-unstyled'></ul>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+  createVerblist();
+});
+createVerblist = function() {
+  var listContainer = $('#verblistContainer');
+  var numLeft = $('.verb-list').length;
+  $.getJSON('/practice/verbs', {'load_list': 'True'}, function(data) {
+    $.each(data, function(index, value){
+      if (index===0) {activate=' active'}else{activate=''};
+      listContainer.prepend('<ul class=\'list-unstyled verb-list\' data-pron=\''+value.pronoun_code+'\' data-verb=\''+value.hr_word+'\' data-tense=\''+value.verb_tense+'\' data-hr_id=\''+value.def_id+'\'><li class=\'\' id=\''+value.def_id+'\'><h1>'+value.hr_word+'</h1></li><li class=\'definitions\'>'+value.en_words.join(',')+'</li>{% if current_user.is_authenticated and current_user.has_role('admin') %}<li>[<span id=\'notVerb\'>not a verb</span>]</li>{% endif %}<li class=\'challenge\'><h3>'+value.pronoun_word+' + '+value.verb_tense+'</h3></li></ul>');
+    })
+    if (numLeft === 0){
+      $('#verblistContainer').find('ul.verb-list').first().addClass('active');
+    }
+  });
+}
+$(document).on('click', '#skipButton', function () {
+  event.preventDefault();
+  var numLeft = $('.verb-list').length;
+  $('.verb-list.active').remove();
+  if (numLeft === 2){
+    createVerblist();
+  }
+  $('.verb-list').first().addClass('active');
+});
+$(document).on('click', '#notVerb', function () {
+  var hr_id = $('.verb-list.active').data('hr_id');
+  console.log(hr_id);
+  $.ajax({
+    type: 'POST',
+    url: '{{ url_for('practice.rm_verb_role') }}', 
+    data: {'hr_id':hr_id },
+    success: function (data, response) { console.log(data) }
+  });
+});
+$(document).on('click', '#answerButton', function () {
+  event.preventDefault();
+
+  var pronoun = $('.verb-list.active').data('pron');
+  var verb_tense = $('.verb-list.active').data('tense');
+  var verb = $('.verb-list.active').data('verb');
+  var hr_id = $('.verb-list.active').data('hr_id');
+  var answer = $('#answerBox').val();
+
+  var numLeft = $('.verb-list').length;
+  $('.verb-list.active').remove();
+  $.getJSON('/practice/verbs/check', {'pronoun_code':pronoun, 'verb':verb, 'verb_tense':verb_tense, 'answer':answer, 'hr_id':hr_id}, function(data, response) {
+    if (data.grade == 'correct') {
+      $('#lastWord.correct').prepend('<li><span id=\''+data.hr_id+'\' class=\'hr-term\' data-add=\'add\'>'+data.verb+'</span></li>');
+    } else {
+      $('#lastWord.incorrect').prepend('<li><span id=\''+data.hr_id+'\' class=\'hr-term\' data-add=\'add\'>You:'+data.answer+' Answer:'+data.correct_answer+'</span></li>');
+      console.log(data);
+    }
+    $('#answerBox').val('');
+  })
+  if (numLeft === 2){
+    createVerblist();
+  }
+  $('.verb-list').first().addClass('active');
+});
+</script>
+{% endblock %}

@@ -3,7 +3,7 @@ import os
 class Config(object):
     SECRET_KEY = os.environ.get('UCITELJ_SECRET')
 
-    """ DB SETTINGS """
+    # DB SETTINGS
     UCITELJ_DB = {
             'user': os.environ.get('UCITELJ_USER'),
             'pass': os.environ.get('UCITELJ_PASS'),

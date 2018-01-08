@@ -6,7 +6,7 @@ from app.models.articles import Article, ArticleText
 from app.utils.stemmer import create_wordlist
 from app.utils.glossary import write_json_glossary
 
-PRONOUNS = ['ja','ti','on','ona','ono','mi','vi','oni','one','ona']
+PRONOUNS = [{'word':'ja','code':'1S'},{'word':'ti','code':'2S'},{'word':'on','code':'3SM'},{'word':'ona','code':'3SF'},{'word':'ono','code':'3SN'},{'word':'mi','code':'1P'},{'word':'vi','code':'2P'},{'word':'oni','code':'3PM'},{'word':'one','code':'3PF'},{'word':'ona','code':'3PN'}]
 VERB_TENSES = ['present','past', 'future', 'conditional', 'imperative']
 
 class WordRole(db.Model):
@@ -43,14 +43,14 @@ class Definition(db.Model):
 
     def en_hr_to_json(self):
         return dict(
-                def_id=self.id,
+                def_id=self.hr_word_id,
                 value=self.en_words.term,
                 label="{} : {}".format(self.en_words.term, self.hr_words.term)
                 )
 
     def hr_en_to_json(self):
         return dict(
-                def_id=self.id,
+                def_id=self.hr_word_id,
                 value=self.hr_words.term,
                 label="{} : {}".format(self.hr_words.term, self.en_words.term)
                 )

@@ -25,5 +25,8 @@
 
 
 {% block extra_js %}
+{% assets filters="rjsmin", output="public/js/feeds.js", "js/feeds.js" %}
+	<script type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %}
 {% endblock %}
 

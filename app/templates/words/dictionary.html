@@ -19,6 +19,9 @@
 {% endblock %}
 
 {% block extra_js %}
+{% assets filters="rjsmin", output="public/js/dictionary.js", "js/dictionary.js" %}
+	<script type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %}
 {% endblock %}
 
 

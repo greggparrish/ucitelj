@@ -40,8 +40,6 @@ configure_uploads(app, images)
 from app.views.static import static as static_bp
 app.register_blueprint(static_bp)
 
-from app.views.practice import practice_bp
-app.register_blueprint(practice_bp, url_prefix='/practice')
 
 from app.views.articles import article_bp
 app.register_blueprint(article_bp, url_prefix='/articles')
@@ -49,9 +47,15 @@ app.register_blueprint(article_bp, url_prefix='/articles')
 from app.views.feeds import feed_bp
 app.register_blueprint(feed_bp, url_prefix='/feeds')
 
+from app.views.words import word_bp
+app.register_blueprint(word_bp, url_prefix='/words')
+
 from app.views.users import user_bp
 from app.models.users import User
 app.register_blueprint(user_bp, url_prefix='/users')
+
+from app.views.practice import practice_bp
+app.register_blueprint(practice_bp, url_prefix='/practice')
 
 
 # USER MGMT

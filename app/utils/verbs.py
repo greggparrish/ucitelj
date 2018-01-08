@@ -1,22 +1,21 @@
-import sys
-
-
+PRES_ENDINGS = {'1S':'m','2S':'š','1P':'mo','2P':'te','3P':['ju','e','u']}
 HTJETI_FORMS = {'1S':'ću','2S':'ćeš','3S':'će','1P':'ćemo','2P':'ćete','3P': 'će'}
 BITI_FORMS = {'1S':'sam','2S':'si','3S':'je','1P':'smo','2P':'ste','3P': 'su'}
 BIH_FORMS = {'1S':'bih','2S':'bi','3S':'bi','1P':'bismo','2P':'biste','3P': 'bi'}
-PAST_PART = {'SM':'o','PM':'li','SF':'la','PF':'le','NS':'lo','NP':'la'}
+PAST_PART = {'SM':'o','PM':'li','SF':'la','PF':'le','SN':'lo','PN':'la'}
 
 class Conjugation:
-    ''' take verb, pronoun, and optional tense
-        returns conjugated verb '''
+    ''' Take verb, pronoun, and optional tense
+        Return: conjugated verb '''
     def __init__(self, verb, pronoun, tense=''):
         self.verb = verb
-        self.pronoun = pronoun
+        self.p3 = pronoun
+        self.p2 = pronoun[:-1]
         self.tense = tense
 
     def conjugate(self):
-        ''' filter verb into proper conjugation based on tense
-        returns conjugated verb '''
+        ''' Filter verb into proper conjugation based on tense
+        Return: conjugated verb '''
         if self.tense=='present':
             verb = self.present()
         if self.tense=='past':
@@ -33,57 +32,52 @@ class Conjugation:
         verb_root=self.verb[:-2]
         return verb_root
 
-    def present(self):
-        ''' Takes pronoun in format NumberPerson, ex. ja = 1S, vi = 2P, etc. '''
-        pres_endings = {'1S':'m','2S':'š','1P':'mo','2P':'te','3P':['ju','e','u']}
+    def present(self, third=False):
+        ''' Returns present, third var can be used to get
+        third person plural for use in other tenses '''
+        self.p2 = '3P' if third == True else self.p2
         verb_root = self.form_root()
-        if self.pronoun == '3S':
+        if self.p2 == '3S':
             c = verb_root
-        elif self.pronoun == '3P':
+        elif self.p2 == '3P':
             if verb_root[-1] == 'a':
-                c = verb_root+pres_endings[self.pronoun][0]
+                c = verb_root+PRES_ENDINGS[self.p2][0]
             elif verb_root[-1] == 'i':
-                c = verb_root[:-1]+pres_endings[self.pronoun][1]
+                c = verb_root[:-1]+PRES_ENDINGS[self.p2][1]
             elif verb_root[-1] == 'e':
-                c = verb_root[:-1]+pres_endings[self.pronoun][2]
+                c = verb_root[:-1]+PRES_ENDINGS[self.p2][2]
         else:
-            c = "{}{}".format(verb_root,pres_endings[self.pronoun])
+            c = "{}{}".format(verb_root,PRES_ENDINGS[self.p2])
         return c
 
     def past(self):
-        ''' Past participle + conjugate biti
-            Takes pronoun in format NumberPersonGender, ex. Kurt Russell  = 3SM, etc. '''
+        ''' Past participle + conjugate biti '''
         verb_root = self.form_root()
-        # add masculine if no pronoun gender
-        pronoun = self.pronoun+'M' if len(self.pronoun) == 2 else self.pronoun
-        return "{}{} {}".format(verb_root, PAST_PART[pronoun[1:]], BITI_FORMS[pronoun[:-1]])
+        return "{}{} {}".format(verb_root, PAST_PART[self.p3[1:]], BITI_FORMS[self.p2])
 
     def future(self):
-        ''' Conjugate htjeti + inifinitive
-            Takes pronoun in format NumberPerson, ex. ja = 1S, vi = 2P, etc. '''
+        ''' Conjugate htjeti + infinitive '''
         verb_root = self.form_root()
-        pronoun = self.pronoun[:-1] if len(self.pronoun) == 3 else self.pronoun
-        return "{} {}".format(self.verb, HTJETI_FORMS[pronoun])
+        return "{} {}".format(self.verb, HTJETI_FORMS[self.p2])
 
     def conditional(self):
-        ''' Past participle + conjugate bih
-            Takes pronoun in format NumberPerson, ex. ja = 1S, vi = 2P, etc. '''
+        ''' Past participle + conjugate bih '''
         verb_root = self.form_root()
-        pronoun = self.pronoun+'M' if len(self.pronoun) == 2 else self.pronoun
-        return "{}{} {}".format(verb_root, PAST_PART[pronoun[1:]], BIH_FORMS[pronoun[:-1]] )
+        return "{}{} {}".format(verb_root, PAST_PART[self.p3[1:]], BIH_FORMS[self.p2] )
 
     def imperative(self):
         ''' Form stem from 3rd person plural,
             ti form add -i if doesn't end in j, +te for vi, +mo for mi
-            Takes pronoun in format NumberPerson, ex. ja = 1S, vi = 2P, etc.
             only works with 2S, 1P, 2P '''
-        imp_stem = self.present()[-1:]
-        if imp_stem[-1:] != 'j':
-            imp_stem = imp_stem+'i'
-        if self.pronoun == '2S':
+        imp_stem = self.present(third=True)[:-1]
+        if imp_stem[-1:] == 'j':
             imp = imp_stem
-        if self.pronoun == '2P':
+        elif imp_stem[-1:] != 'j':
+            imp = imp_stem+'i'
+        elif self.p2 == '2S':
+            imp = imp_stem
+        elif self.p2 == '2P':
             imp = imp_stem+'te'
-        if self.pronoun == '1P':
+        elif self.p2 == '1P':
             imp = imp_stem+'mo'
         return imp

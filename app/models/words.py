@@ -1,4 +1,3 @@
-import sys
 from sqlalchemy.sql.expression import func
 from app import db
 
@@ -6,7 +5,11 @@ from app.models.articles import Article, ArticleText
 from app.utils.stemmer import create_wordlist
 from app.utils.glossary import write_json_glossary
 
-PRONOUNS = [{'word':'ja','code':'1S'},{'word':'ti','code':'2S'},{'word':'on','code':'3SM'},{'word':'ona','code':'3SF'},{'word':'ono','code':'3SN'},{'word':'mi','code':'1P'},{'word':'vi','code':'2P'},{'word':'oni','code':'3PM'},{'word':'one','code':'3PF'},{'word':'ona','code':'3PN'}]
+PRON_CODES = ['1S','2S','3SM','3SF','3SN','1P','2P','3PM','3PF','3PN']
+PRON_WORDS = ['ja','ti','on','ona','ono','mi','vi','oni','one','ona']
+PRONOUNS = [ {'code':c, 'word':w} for c,w in zip(PRON_CODES,PRON_WORDS) ]
+GENDERS = ['M','F','N']
+
 VERB_TENSES = ['present','past', 'future', 'conditional', 'imperative']
 
 class WordRole(db.Model):
@@ -43,14 +46,14 @@ class Definition(db.Model):
 
     def en_hr_to_json(self):
         return dict(
-                def_id=self.hr_word_id,
+                def_id=self.id,
                 value=self.en_words.term,
                 label="{} : {}".format(self.en_words.term, self.hr_words.term)
                 )
 
     def hr_en_to_json(self):
         return dict(
-                def_id=self.hr_word_id,
+                def_id=self.id,
                 value=self.hr_words.term,
                 label="{} : {}".format(self.hr_words.term, self.en_words.term)
                 )
@@ -96,14 +99,14 @@ def create_glossary(a_id, article_text):
         paralist = []
         for word in para:
 
-            ''' First check if word exists as is '''
+            # First check if word exists as is
             word_defs = Definition.query.join(Definition.hr_words, aliased=True).filter_by(term=word).limit(3).all()
 
-            ''' If not, check if any words start with stemmed root '''
+            # If not, check if any words start with stemmed root
             if not word_defs:
                 word_defs = Definition.query.join(Definition.hr_words, aliased=True).filter(HrWord.term.like("{}%".format(para[word]))).order_by(func.length(HrWord.term)).limit(3).all()
 
-            ''' Final check, remove last letter and try again for stemmed root '''
+            # Final check, remove last letter and try again for stemmed root
             if not word_defs and len(para[word][:-1]) > 2:
                 word_defs = Definition.query.join(Definition.hr_words, aliased=True).filter(HrWord.term.like("{}%".format(para[word][:-1]))).limit(3).all()
 

@@ -85,6 +85,11 @@ class UserRoles(db.Model):
     def __repr__(self):
         return '<User role: {} {}>'.format(self.user.username, self.role.name)
 
+class InviteCode(db.Model, UserMixin):
+    __tablename__ = 'invite_codes'
+    id = db.Column(db.Integer(), primary_key=True)
+    code = db.Column(db.String(256), unique=True, nullable=False)
+
 class Subscription(db.Model):
     '''
     M2M table linking users with feeds

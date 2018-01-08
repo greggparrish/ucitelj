@@ -5,7 +5,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 from app import app, db
 from app.models.users import User, Role, UserRoles, Subscription, WordBank
 from app.forms.users import LoginForm, RegistrationForm
-from app.models.practice import Definition, format_glossary
+from app.models.words import Definition, format_glossary
 
 
 user_bp = Blueprint('users', __name__)

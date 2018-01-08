@@ -6,7 +6,7 @@ from flask_login import current_user
 from app import app, db
 from app.models.users import WordBank
 from app.models.articles import Article, ArticleText
-from app.models.practice import Definition, create_glossary
+from app.models.words import Definition, create_glossary
 
 article_bp = Blueprint('articles', __name__)
 

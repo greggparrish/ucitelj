@@ -1,3 +1,16 @@
 img {
   max-width: 100%;
 }
+
+ul#messages {
+  height: 30px;
+  list-style-type: none;
+  text-align: center;
+  position: fixed;
+  top: 70px; bottom: 0; left: 0; right: 0;
+  li {
+    color: $red;
+    padding: 10px;
+    }
+  }
+}

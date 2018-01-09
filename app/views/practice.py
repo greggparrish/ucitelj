@@ -1,6 +1,6 @@
 import random
 from sqlalchemy.sql.expression import func
-from flask import Blueprint, render_template, request, jsonify, escape
+from flask import Blueprint, render_template, request, jsonify, escape, flash
 from flask_user import login_required, roles_required, current_user
 
 from app import app, db, csrf
@@ -77,17 +77,21 @@ def insert_wordbank():
         uid = current_user.id
 
         if add_type == 'add':
-          wb = WordBank(user_id=uid,hr_word_id=wid.id)
-          db.session.add(wb)
-          db.session.commit()
-          return jsonify('Added: {}'.format(wid))
+            check_word = WordBank.query.filter_by(user_id=uid,hr_word_id=wid.id).first()
+            if check_word:
+                return jsonify('Word already in your wordbank: {}'.format(wid.term))
+            else:
+                wb = WordBank(user_id=uid,hr_word_id=wid.id)
+                db.session.add(wb)
+                db.session.commit()
+                return jsonify('Added: {}'.format(wid.term))
 
         elif add_type == 'rm':
             wb = WordBank.query.filter_by(user_id=uid,hr_word_id=wid.id).first()
             if wb:
                 db.session.delete(wb)
                 db.session.commit()
-                return jsonify('Removed: {}'.format(wid))
+                return jsonify('Removed: {}'.format(wid.term))
             else:
                 return jsonify('Word not in your wordbank')
         else:

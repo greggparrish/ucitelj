@@ -3,7 +3,9 @@ $(document).on('click', '.hr-term', function () {
   var word_id = $(this).attr('id');
   var add_type = $(this).attr("data-add");
   var setAdd = (add_type == 'add') ? 'rm' : 'add';
-  $.get('/practice/wordbank/add/', {word_id : word_id, add_type : add_type}, function(data){ });
+  $.get('/practice/wordbank/add/', {word_id : word_id, add_type : add_type}, function(data){   
+    $('#messages li').text(data).fadeIn().delay(2000).fadeOut();
+  });
   $(this).attr('data-add', setAdd);
   $(this).toggleClass('wb');
   return false;

@@ -46,14 +46,14 @@ class Definition(db.Model):
 
     def en_hr_to_json(self):
         return dict(
-                def_id=self.id,
+                def_id=self.hr_word_id,
                 value=self.en_words.term,
                 label="{} : {}".format(self.en_words.term, self.hr_words.term)
                 )
 
     def hr_en_to_json(self):
         return dict(
-                def_id=self.id,
+                def_id=self.hr_word_id,
                 value=self.hr_words.term,
                 label="{} : {}".format(self.hr_words.term, self.en_words.term)
                 )
@@ -120,7 +120,6 @@ def create_glossary(a_id, article_text):
             'definitions' : [para_all]
             })
         paracount += 1
-    print(glossary, file=sys.stdout)
     jg = write_json_glossary(a_id, glossary)
     if jg:
         at = ArticleText.query.filter(ArticleText.article_id==a_id).first()

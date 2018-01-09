@@ -4,6 +4,8 @@ BITI_FORMS = {'1S':'sam','2S':'si','3S':'je','1P':'smo','2P':'ste','3P': 'su'}
 BIH_FORMS = {'1S':'bih','2S':'bi','3S':'bi','1P':'bismo','2P':'biste','3P': 'bi'}
 PAST_PART = {'SM':'o','PM':'li','SF':'la','PF':'le','SN':'lo','PN':'la'}
 
+SOFTENED_CONS = {'b': 'blj', 'c': 'č', 'd': 'đ', 'g': 'ž', 'h': 'š', 'k': 'č', 'l': 'lj', 'm': 'mlj', 'n': 'nj', 'p': 'plj', 's': 'š', 'sl': 'šlj', 'sn': 'šnj', 'st': 'šć', 't': 'ć', 'v': 'vlj', 'z': 'ž', 'zd': 'žđ', 'zn': 'žnj'}
+
 class Conjugation:
     ''' Take verb, pronoun, and optional tense
         Return: conjugated verb '''
@@ -51,17 +53,17 @@ class Conjugation:
         return c
 
     def past(self):
-        ''' Past participle + conjugate biti '''
+        ''' Past participle + conjugation of biti '''
         verb_root = self.form_root()
         return "{}{} {}".format(verb_root, PAST_PART[self.p3[1:]], BITI_FORMS[self.p2])
 
     def future(self):
-        ''' Conjugate htjeti + infinitive '''
+        ''' Conjugation of htjeti + infinitive '''
         verb_root = self.form_root()
         return "{} {}".format(self.verb, HTJETI_FORMS[self.p2])
 
     def conditional(self):
-        ''' Past participle + conjugate bih '''
+        ''' Past participle + conjugation of bih '''
         verb_root = self.form_root()
         return "{}{} {}".format(verb_root, PAST_PART[self.p3[1:]], BIH_FORMS[self.p2] )
 

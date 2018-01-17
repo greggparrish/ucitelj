@@ -3,8 +3,7 @@ from slugify import slugify
 from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
 from flask_user import login_required, roles_required, current_user
 
-from app import app, db
-from app import images
+from app import db, images
 from app.models.feeds import Feed
 from app.models.users import Subscription
 from app.models.articles import Article

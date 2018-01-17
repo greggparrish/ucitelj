@@ -12,14 +12,16 @@ from flask_uploads import UploadSet, IMAGES, configure_uploads
 from flask_user import login_required, UserManager, UserMixin, SQLAlchemyAdapter
 from flask_wtf.csrf import CSRFProtect
 
-
 from config import Config
 
 db = SQLAlchemy()
 migrate = Migrate()
 login_manager = LoginManager()
+login_manager.login_view = 'users.login'
 mail = Mail()
 babel = Babel()
+images = UploadSet('feeds', IMAGES)
+
 
 # INIT APP
 app = Flask(__name__)
@@ -31,15 +33,12 @@ migrate.init_app(app, db)
 login_manager.init_app(app)
 mail.init_app(app)
 babel.init_app(app)
-csrf = CSRFProtect(app)
-images = UploadSet('feeds', IMAGES)
 configure_uploads(app, images)
-
+csrf = CSRFProtect(app)
 
 # BLUEPRINTS
 from app.views.static import static as static_bp
 app.register_blueprint(static_bp)
-
 
 from app.views.articles import article_bp
 app.register_blueprint(article_bp, url_prefix='/articles')
@@ -56,7 +55,6 @@ app.register_blueprint(user_bp, url_prefix='/users')
 
 from app.views.practice import practice_bp
 app.register_blueprint(practice_bp, url_prefix='/practice')
-
 
 # USER MGMT
 db_adapter = SQLAlchemyAdapter(db, User)
@@ -80,4 +78,3 @@ assets.register('css_all', css)
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
-

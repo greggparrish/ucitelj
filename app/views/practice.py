@@ -3,7 +3,9 @@ from sqlalchemy.sql.expression import func
 from flask import Blueprint, render_template, request, jsonify, escape, flash
 from flask_user import login_required, roles_required, current_user
 
-from app import app, db, csrf
+from app import db, csrf
+from app.models.practice import Verb, VerbType, WordCase, Noun, Adjective, Adverb
+from app.forms.practice import WordCaseForm, VerbTypeForm, VerbForm, NounForm, AdjectiveForm, AdverbForm
 from app.models.words import Definition, WordRole, HrWord, EnWord, format_glossary, PRONOUNS, VERB_TENSES, GENDERS
 from app.models.users import WordBank
 from app.utils.verbs import Conjugation
@@ -123,3 +125,28 @@ def rm_verb_role():
         db.session.commit()
         return jsonify('Removed {} from verbs.'.format(hr_id))
     return jsonify(' No word id')
+
+
+# Forms
+@practice_bp.route('/new_verb', methods=(['GET', 'POST']))
+@login_required
+@roles_required('admin')
+def new_verb():
+    form = VerbForm()
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            verb = Verb(
+                hr_term=form.hr_term.data,
+                en_term=form.en_term.data,
+                type_id=form.type_id.data,
+                )
+            try:
+                db.session.add(verb)
+                db.session.commit()
+                flash('verb added.')
+            except Exception as e:
+                flash('Error: verb exists {}.'.format(e))
+            return redirect(url_for('practice.index'))
+    return render_template('practice/new_verb_form.html', form=form)
+
+

@@ -2,7 +2,7 @@ from sqlalchemy.sql.expression import func
 from flask import Blueprint, render_template, request, jsonify, escape
 from flask_user import login_required, roles_required, current_user
 
-from app import app, db
+from app import db
 from app.models.words import Definition, HrWord, EnWord
 
 word_bp = Blueprint('words', __name__)

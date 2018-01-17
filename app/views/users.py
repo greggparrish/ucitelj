@@ -2,7 +2,7 @@ from sqlalchemy.orm import subqueryload
 from flask import Blueprint, flash, render_template, redirect, url_for, request, jsonify
 from flask_login import login_user, logout_user, current_user, login_required
 
-from app import app, db
+from app import db
 from app.models.users import User, Role, UserRoles, Subscription, WordBank
 from app.forms.users import LoginForm, RegistrationForm
 from app.models.words import Definition, format_glossary

@@ -4,7 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 from slugify import slugify
 
-from app import app, db
+from app import db
 
 
 class Article(db.Model):

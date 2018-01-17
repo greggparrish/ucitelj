@@ -1,8 +1,8 @@
 import os
 from time import time
 import json
-from app import app
 
+from app import app
 
 
 def format_glossary(a_id, glossary):

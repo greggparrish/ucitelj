@@ -12,7 +12,7 @@ from sqlalchemy.exc import IntegrityError
 from slugify import slugify
 from flask_login import login_required
 
-from app import app, db
+from app import db
 from app.models.articles import Article
 
 TYPE_CHOICES = ('culture', 'news', 'politics', 'regional', 'religious')

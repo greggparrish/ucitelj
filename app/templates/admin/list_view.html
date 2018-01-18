@@ -1,0 +1,23 @@
+{% extends "layouts/base.html" %}
+{% block title %}Admin:{%endblock %}
+
+{% block content %}
+<a href="{{ path + 'new'}}">create new</a>
+<table class='table table-striped admin-table'>
+  {% for item in obj %}
+  <tr>
+    <td>
+      <a href="{{ path }}{{item.id}}">{{ item }}</a>
+    </td>
+    <td>
+      <a href="{{ path + 'delete'}}/{{item.id}}"> x </a>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}
+
+{% block extra_js %}
+{% endblock %}
+
+

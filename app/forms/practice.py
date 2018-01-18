@@ -1,8 +1,10 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, BooleanField, SubmitField, RadioField, TextField
+from wtforms import StringField, BooleanField, SubmitField, RadioField, TextField, SelectField
+from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from wtforms.validators import ValidationError, DataRequired
 
 from app.models.practice import Verb, VerbType, WordCase, Noun, Adjective, Adverb, GENDER_CHOICES
+
 
 class WordCaseForm(FlaskForm):
     name = StringField('Case name', validators=[DataRequired()])
@@ -17,7 +19,7 @@ class VerbTypeForm(FlaskForm):
 class VerbForm(FlaskForm):
     hr_term = StringField('HR word', validators=[DataRequired()])
     en_term = StringField('EN definition', validators=[DataRequired()])
-    type_id = RadioField(choices=VerbType())
+    type_id = SelectField('VerbType', coerce=int)
     submit = SubmitField('Add Verb')
 
 class NounForm(FlaskForm):

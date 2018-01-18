@@ -7,11 +7,14 @@ GENDER_CHOICES = tuple(GENDERS)
 
 class WordCase(db.Model):
     '''
+    Cases: Nominative, accusative, etc.
     '''
     __tablename__ = 'word_cases'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(), unique=True, nullable=False)
     table = db.Column(db.Text(), nullable=True)
+    def __repr__(self):
+        return f'<Case: {self.name}>'
 
 class VerbType(db.Model):
     '''
@@ -24,6 +27,10 @@ class VerbType(db.Model):
     code = db.Column(db.String(8), unique=True, nullable=False)
     verbs = db.relationship('Verb', backref='verb_type', lazy='dynamic')
 
+    def __repr__(self):
+        return f'<Verb type: {self.code} {self.head_verb}>'
+
+
 class Verb(db.Model):
     '''
     hr_term, en_term, type_id
@@ -33,6 +40,9 @@ class Verb(db.Model):
     hr_term = db.Column(db.String(), unique=True, nullable=False)
     en_term = db.Column(db.String(), nullable=False)
     type_id = db.Column(db.Integer, db.ForeignKey('verb_types.id'), nullable=False)
+
+    def __repr__(self):
+        return f'<Verb: {self.hr_term} > {self.en_term}>'
 
 class Noun(db.Model):
     '''
@@ -46,6 +56,9 @@ class Noun(db.Model):
     plural = db.Column(db.Boolean())
     animate = db.Column(db.Boolean())
 
+    def __repr__(self):
+        return f'<Noun: {self.hr_term} > {self.en_term}>'
+
 class Adjective(db.Model):
     '''
     hr_term, en_term
@@ -55,6 +68,9 @@ class Adjective(db.Model):
     hr_term = db.Column(db.String(), unique=True, nullable=False)
     en_term = db.Column(db.String(), nullable=False)
 
+    def __repr__(self):
+        return f'<Adjective: {self.hr_term} > {self.en_term}>'
+
 class Adverb(db.Model):
     '''
     hr_term, en_term
@@ -63,3 +79,6 @@ class Adverb(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     hr_term = db.Column(db.String(), unique=True, nullable=False)
     en_term = db.Column(db.String(), nullable=False)
+
+    def __repr__(self):
+        return f'<adverb: {self.hr_term} > {self.en_term}>'

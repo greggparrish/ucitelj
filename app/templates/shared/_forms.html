@@ -1,0 +1,26 @@
+{% macro render(form) -%}
+
+<fieldset>
+  {% for field in form %}
+    {{ form.csrf_token }}
+    <div class='form-group'>
+      {{ field.label }}
+      {% if field.type == "SubmitField" %}
+        {{ field(class='btn btn-primary') }}
+      {% else %}
+      {{ field(class='form-control', placeholder='{{field.label}}') }}
+      {% endif %}
+      {% if field.errors or field.help_text %}
+        <span class="help-inline">
+          {% if field.errors %}
+            {{ field.errors|join(' ') }}
+          {% else %}
+            {{ field.help_text }}
+          {% endif %}
+        </span>
+      {% endif %}
+    </div>
+  {% endfor %}
+  <input type='submit' class='btn btn-primary' value='submit'/>
+</fieldset>
+{% endmacro %}

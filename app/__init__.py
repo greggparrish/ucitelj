@@ -56,6 +56,9 @@ app.register_blueprint(user_bp, url_prefix='/users')
 from app.views.practice import practice_bp
 app.register_blueprint(practice_bp, url_prefix='/practice')
 
+from app.admin.admin import admin_bp
+app.register_blueprint(admin_bp, url_prefix='/admin')
+
 # USER MGMT
 db_adapter = SQLAlchemyAdapter(db, User)
 user_manager = UserManager(db_adapter, app)

@@ -1,6 +1,6 @@
 import random
 from sqlalchemy.sql.expression import func
-from flask import Blueprint, render_template, request, jsonify, escape, flash
+from flask import Blueprint, render_template, request, redirect, jsonify, escape, flash, url_for
 from flask_user import login_required, roles_required, current_user
 
 from app import db, csrf
@@ -12,10 +12,29 @@ from app.utils.verbs import Conjugation
 
 practice_bp = Blueprint('practice', __name__)
 
-# PRACTICE PAGES
 @practice_bp.route('/')
 def index():
     return render_template('practice/index.html')
+
+@practice_bp.route('/list')
+@login_required
+@roles_required('admin')
+def listall():
+    wcs = WordCase.query.all()
+    vts = VerbType.query.all()
+    nouns = Noun.query.all()
+    verbs = Verb.query.all()
+    adjs = Adjective.query.all()
+    advs = Adverb.query.all()
+    context = {
+            'wcs': wcs,
+            'vts': vts,
+            'nouns': nouns,
+            'verbs': verbs,
+            'adjs': adjs,
+            'advs': advs,
+            }
+    return render_template('practice/listall.html', context=context)
 
 @practice_bp.route('/verbs', methods=['GET'])
 def verbs():
@@ -110,43 +129,3 @@ def conj_test():
     tense = random.choice(VERB_TENSES)
     v = Conjugation(verb,pronoun,tense).conjugate()
     return render_template('practice/conjugate.html', v=v)
-
-
-# Admin actions
-@practice_bp.route('/verbs/notaverb', methods=(['POST']))
-@csrf.exempt
-@login_required
-@roles_required('admin')
-def rm_verb_role():
-    hr_id = request.form.get('hr_id')
-    if hr_id:
-        for d in Definition.query.filter(Definition.hr_word_id == hr_id, Definition.role_id == 31).all():
-            d.role_id=None
-        db.session.commit()
-        return jsonify('Removed {} from verbs.'.format(hr_id))
-    return jsonify(' No word id')
-
-
-# Forms
-@practice_bp.route('/new_verb', methods=(['GET', 'POST']))
-@login_required
-@roles_required('admin')
-def new_verb():
-    form = VerbForm()
-    if request.method == 'POST':
-        if form.validate_on_submit():
-            verb = Verb(
-                hr_term=form.hr_term.data,
-                en_term=form.en_term.data,
-                type_id=form.type_id.data,
-                )
-            try:
-                db.session.add(verb)
-                db.session.commit()
-                flash('verb added.')
-            except Exception as e:
-                flash('Error: verb exists {}.'.format(e))
-            return redirect(url_for('practice.index'))
-    return render_template('practice/new_verb_form.html', form=form)
-
-

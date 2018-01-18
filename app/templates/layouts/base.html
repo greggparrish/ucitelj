@@ -20,14 +20,13 @@
     {% set curr_page = request.endpoint.split('.') %}
     <div class="container {{ curr_page[0] }} {{ curr_page[1] }}">
       {% with messages = get_flashed_messages() %}
+        {% if messages %}
           <ul id="messages">
-              <li>&nbsp;</li>
-            {% if messages %}
-              {% for message in messages %}
-                <li>{{ message }}</li>
-              {% endfor %}
-            {% endif %}
+            {% for message in messages %}
+              <li>{{ message }}</li>
+            {% endfor %}
           </ul>
+        {% endif %}
       {% endwith %} 
       {% block content %}{% endblock %}
     </div>

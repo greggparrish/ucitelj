@@ -1,0 +1,18 @@
+{% extends "layouts/base.html" %}
+{% block title %}New Verb Type: {%endblock %}
+{% import 'shared/_forms.html' as forms %}
+
+{% block content %}
+{% block form %}
+<section>
+  <form action="{{ form_action }}" method="{{ method | d("POST") }}">
+    {{ forms.render(form) }}
+  </form>
+</section>
+{% endblock form %}
+{% endblock %}
+
+{% block extra_js %}
+{% endblock %}
+
+

@@ -33,7 +33,7 @@ class Feed(db.Model):
     checked = db.Column(db.DateTime)
     country = db.Column(db.Enum(*COUNTRY_CHOICES, name="country"))
     feed_type = db.Column(db.Enum(*TYPE_CHOICES, name="feed_type"))
-    logo_filename = db.Column(db.String(250), nullable=False)
+    logo_filename = db.Column(db.String(250), nullable=True)
     name = db.Column(db.String(250), nullable=False)
     rss = db.Column(db.String(250), unique=True, nullable=False)
     users = db.relationship("Subscription", backref='feeds')

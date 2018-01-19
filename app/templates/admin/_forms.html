@@ -2,13 +2,14 @@
 
 <fieldset>
   {% for field in form %}
-    {{ form.csrf_token }}
     <div class='form-group'>
-      {{ field.label }}
+      {% if "hidden" not in field.flags %}
+        {{ field.label }}
+      {% endif %}
       {% if field.type == "SubmitField" %}
         {{ field(class='btn btn-primary') }}
       {% else %}
-      {{ field(class='form-control', placeholder='{{field.label}}') }}
+        {{ field(class='form-control', placeholder=field.name) }}
       {% endif %}
       {% if field.errors or field.help_text %}
         <span class="help-inline">

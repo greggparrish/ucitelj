@@ -1,10 +1,10 @@
 {% extends "layouts/base.html" %}
 {% block title %}Admin:{%endblock %}
-{% import 'shared/_forms.html' as forms %}
+{% import 'admin/_forms.html' as forms %}
 
 {% block content %}
 <section>
-  <h1>{{ action }} {{ data_type }}</h1>
+  <h1>{{ action }}</h1>
   <form action="{{ form_action }}" method="{{ method | d("POST") }}">
     {{ forms.render(form) }}
   </form>

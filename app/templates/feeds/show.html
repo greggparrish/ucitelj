@@ -3,11 +3,6 @@
 
 {% block content %}
   <div class='col-xs-12'>
-  {% if current_user.is_authenticated and current_user.has_role('admin') %}
-    <ul class='list-unstyled admin'>
-      <li><a href="{{ url_for('feeds.edit', feed_id=f.id) }}">edit feed</a></li>
-    </ul>
-  {% endif %}
     <div class='col-xs-3'>
 			<img src="/static/public/uploads/feeds/{{ f.logo_filename }}" />
     </div>

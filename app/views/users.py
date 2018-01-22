@@ -13,11 +13,11 @@ user_bp = Blueprint('users', __name__)
 @user_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('main.index'))
+        return redirect(url_for('feeds.index'))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
-        if user is None or not user.check_password(form.password.data):
+        if user is None or not user.check_password(form.password_hash.data):
             flash('Invalid username or password')
             return redirect(url_for('users.login'))
         login_user(user, remember=form.remember_me.data)
@@ -25,7 +25,7 @@ def login():
         if not next_page or not next_page.startswith('/'):
             next_page = url_for('feeds.index')
         return redirect(next_page)
-    return render_template('users/login.html', title='Sign In', form=form)
+    return render_template('users/login.html', title='Log In', form=form)
 
 @user_bp.route('/register', methods=['GET', 'POST'])
 def register():
@@ -62,4 +62,3 @@ def profile():
 def logout():
     logout_user()
     return redirect(url_for('static.home'))
-

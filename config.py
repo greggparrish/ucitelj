@@ -25,7 +25,9 @@ class Config(object):
     MAIL_USE_SSL = True
     MAIL_USE_TLS = False
 
-    USER_UNAUTHORIZED_ENDPOINT = 'users/login'
+    USER_UNAUTHORIZED_ENDPOINT = 'users.login'
+    USER_LOGIN_URL = '/users/login'
+    USER_LOGIN_URL = '/users/logout'
     USER_LOGIN_TEMPLATE = 'users/login.html'
     USER_REGISTER_TEMPLATE = 'users/register.html'
 

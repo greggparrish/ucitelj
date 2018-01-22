@@ -1,6 +1,7 @@
 from app import db
 from app.models.words import PRONOUNS, GENDERS, VERB_TENSES
 
+
 # Cleaned word models b/c dictionary db is still a mess
 
 GENDER_CHOICES = tuple(GENDERS)

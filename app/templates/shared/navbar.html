@@ -16,6 +16,10 @@
 				<li><a href="{{ url_for('practice.index') }}">practice</a></li>
 				<li><a href="{{ url_for('words.dictionary') }}">dictionary</a></li>
         {% if current_user.is_authenticated %}
+          {% if current_user.has_role('admin') %}
+            <li><a href="{{ url_for('admin.index') }}">admin</a></li>
+
+          {% endif %}
           <li><a href="{{ url_for('users.profile') }}">{{ current_user.username }}</a></li>
           <li><a href="{{ url_for('users.logout') }}">logout</a></li>
         {% else %}

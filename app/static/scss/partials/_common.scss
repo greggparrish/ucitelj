@@ -8,7 +8,7 @@ ul#messages {
   text-align: center;
   position: relative;
   overflow: hidden;
-  top: 70px; bottom: 0; left: 0; right: 0;
+  @include center_obj;
   li {
     color: $red;
     padding: 10px;

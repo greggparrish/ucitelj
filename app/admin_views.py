@@ -5,6 +5,8 @@ from flask_admin.contrib.sqla import ModelView
 
 from app.models.users import User
 from app.models.practice import Verb, Noun, Adjective, Adverb, VerbType, WordCase
+from app.models.feeds import Feed
+from app.models.articles import Article, ArticleText
 
 
 class UciteljModelView(ModelView):
@@ -19,7 +21,11 @@ class UciteljModelView(ModelView):
 class UserView(UciteljModelView):
     column_exclude_list = ['password_hash', 'confirmed_at']
 
+# PRACTICE
 class VerbTypeView(UciteljModelView):
+    form_excluded_columns = ['verbs']
+
+class VerbView(UciteljModelView):
     form_excluded_columns = ['verbs']
 
 class VerbView(UciteljModelView):
@@ -32,3 +38,18 @@ admin.add_view(UciteljModelView(Adjective, db.session))
 admin.add_view(UciteljModelView(Adverb, db.session))
 admin.add_view(UciteljModelView(WordCase, db.session))
 admin.add_view(VerbTypeView(VerbType, db.session))
+
+# FEEDS & ARTICLES
+class FeedView(UciteljModelView):
+    column_list = ['name', 'feed_type', 'checked', 'country']
+    column_exclude_list = ['confirmed_at', 'logo_filename']
+    form_excluded_columns = ['users', 'articles']
+class ArticleView(UciteljModelView):
+    column_list = ['feed', 'title', 'date']
+class ArticleTextView(UciteljModelView):
+    column_list = ['article', 'title']
+    column_searchable_list = ['article.title']
+
+admin.add_view(FeedView(Feed, db.session))
+admin.add_view(ArticleView(Article, db.session))
+admin.add_view(ArticleTextView(ArticleText, db.session))

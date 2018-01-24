@@ -14,33 +14,22 @@ class WordCase(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(), unique=True, nullable=False)
     table = db.Column(db.Text(), nullable=True)
+    body = db.Column(db.Text(), nullable=True)
     def __repr__(self):
         return f'<Case: {self.name}>'
-
-class VerbType(db.Model):
-    '''
-    Conjugation type for verb, how stem changes etc
-    head_verb, code, verbs (assoc)
-    '''
-    __tablename__ = 'verb_types'
-    id = db.Column(db.Integer, primary_key=True)
-    head_verb = db.Column(db.String(24), unique=True, nullable=False)
-    code = db.Column(db.String(8), unique=True, nullable=False)
-    verbs = db.relationship('Verb', backref='verb_type', lazy='dynamic')
-
-    def __repr__(self):
-        return f'<Verb type: {self.code} {self.head_verb}>'
 
 
 class Verb(db.Model):
     '''
-    hr_term, en_term, type_id
+    hr_term, en_term
     '''
     __tablename__ = 'verbs'
     id = db.Column(db.Integer, primary_key=True)
-    hr_term = db.Column(db.String(), unique=True, nullable=False)
-    en_term = db.Column(db.String(), nullable=False)
-    type_id = db.Column(db.Integer, db.ForeignKey('verb_types.id'), nullable=False)
+    hr_inf = db.Column(db.String(), unique=True, nullable=False)
+    en_inf = db.Column(db.String(), nullable=False)
+    pres_3 = db.Column(db.String(), nullable=True)
+    past_m = db.Column(db.String(), nullable=True)
+    past_f = db.Column(db.String(), nullable=True)
 
     def __repr__(self):
         return f'<Verb: {self.hr_term} > {self.en_term}>'
@@ -83,3 +72,16 @@ class Adverb(db.Model):
 
     def __repr__(self):
         return f'<adverb: {self.hr_term} > {self.en_term}>'
+
+class Preposition(db.Model):
+    '''
+    hr_term, en_term
+    '''
+    __tablename__ = 'prepositions'
+    id = db.Column(db.Integer, primary_key=True)
+    hr_term = db.Column(db.String(), unique=True, nullable=False)
+    en_term = db.Column(db.String(), nullable=False)
+    description = db.Column(db.String(), nullable=True)
+
+    def __repr__(self):
+        return f'<preposition: {self.hr_term} > {self.en_term}>'

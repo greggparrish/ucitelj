@@ -4,24 +4,23 @@ from flask import Blueprint, render_template, request, redirect, jsonify, escape
 from flask_user import login_required, roles_required, current_user
 
 from app import db, csrf
-from app.models.practice import Verb, VerbType, WordCase, Noun, Adjective, Adverb
-from app.forms.practice import WordCaseForm, VerbTypeForm, VerbForm, NounForm, AdjectiveForm, AdverbForm
+from app.models.grammar import Verb, WordCase, Noun, Adjective, Adverb
+from app.forms.grammar import WordCaseForm, VerbForm, NounForm, AdjectiveForm, AdverbForm
 from app.models.words import Definition, WordRole, HrWord, EnWord, format_glossary, PRONOUNS, VERB_TENSES, GENDERS
 from app.models.users import WordBank
 from app.utils.verbs import Conjugation
 
-practice_bp = Blueprint('practice', __name__)
+grammar_bp = Blueprint('grammar', __name__)
 
-@practice_bp.route('/')
+@grammar_bp.route('/')
 def index():
-    return render_template('practice/index.html')
+    return render_template('grammar/index.html')
 
-@practice_bp.route('/list')
+@grammar_bp.route('/list')
 @login_required
 @roles_required('admin')
 def listall():
     wcs = WordCase.query.all()
-    vts = VerbType.query.all()
     nouns = Noun.query.all()
     verbs = Verb.query.all()
     adjs = Adjective.query.all()
@@ -34,9 +33,9 @@ def listall():
             'adjs': adjs,
             'advs': advs,
             }
-    return render_template('practice/listall.html', context=context)
+    return render_template('grammar/listall.html', context=context)
 
-@practice_bp.route('/verbs', methods=['GET'])
+@grammar_bp.route('/verbs', methods=['GET'])
 def verbs():
     load_list = request.args.get('load_list', type=bool)
     if load_list == True:
@@ -56,9 +55,9 @@ def verbs():
                 'pronouns': PRONOUNS,
                 'tenses': VERB_TENSES
                 }
-        return render_template('practice/verbs.html', context=context)
+        return render_template('grammar/verbs.html', context=context)
 
-@practice_bp.route('/verbs/check', methods=['GET'])
+@grammar_bp.route('/verbs/check', methods=['GET'])
 def verb_check():
     # check that all args are present
     if set(['answer','verb','pronoun_code','verb_tense','hr_id']).issubset(set([k for k in request.args.keys()])):
@@ -85,7 +84,7 @@ def verb_check():
 
 
 # WORDBANK
-@practice_bp.route('/wordbank/add/', methods=['GET'])
+@grammar_bp.route('/wordbank/add/', methods=['GET'])
 @login_required
 def insert_wordbank():
     word_id = None
@@ -121,11 +120,11 @@ def insert_wordbank():
         return jsonify('Request format error')
 
 
-@practice_bp.route('/conjugate')
+@grammar_bp.route('/conjugate')
 def conj_test():
     verb = random.choice(['spavati', 'bruniti', 'vidjeti', 'kupovati'])
     p = random.choice(PRONOUNS)['code']
     pronoun = p+random.choice(GENDERS) if len(p) == 2 else p
     tense = random.choice(VERB_TENSES)
     v = Conjugation(verb,pronoun,tense).conjugate()
-    return render_template('practice/conjugate.html', v=v)
+    return render_template('grammar/conjugate.html', v=v)

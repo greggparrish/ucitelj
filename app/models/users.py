@@ -99,6 +99,8 @@ class Subscription(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
     feed_id = db.Column(db.Integer, db.ForeignKey('feeds.id', ondelete='CASCADE'), nullable=False)
     __table_args__ = (db.UniqueConstraint("feed_id", "user_id"),)
+    def __repr__(self):
+        return '<Sub: {}>'.format(self.feed.name)
 
 class WordBank(db.Model):
     '''

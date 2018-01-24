@@ -38,6 +38,7 @@ class Feed(db.Model):
     rss = db.Column(db.String(250), unique=True, nullable=False)
     users = db.relationship("Subscription", backref='feeds')
     slug = db.Column(db.String(250), unique=True, nullable=False)
+    subscriptions = db.relationship("Subscription", backref='feed')
 
     def country_choices(self):
         return [ (c, c) for c in COUNTRY_CHOICES ]

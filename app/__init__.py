@@ -55,8 +55,8 @@ from app.views.users import user_bp
 from app.models.users import User
 app.register_blueprint(user_bp, url_prefix='/users')
 
-from app.views.practice import practice_bp
-app.register_blueprint(practice_bp, url_prefix='/practice')
+from app.views.grammar import grammar_bp
+app.register_blueprint(grammar_bp, url_prefix='/grammar')
 
 # USER MGMT
 db_adapter = SQLAlchemyAdapter(db, User)

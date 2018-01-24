@@ -3,7 +3,7 @@ from wtforms import StringField, BooleanField, SubmitField, RadioField, TextFiel
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from wtforms.validators import ValidationError, DataRequired
 
-from app.models.practice import Verb, VerbType, WordCase, Noun, Adjective, Adverb, GENDER_CHOICES
+from app.models.grammar import Verb, WordCase, Noun, Adjective, Adverb, GENDER_CHOICES
 
 
 class WordCaseForm(FlaskForm):

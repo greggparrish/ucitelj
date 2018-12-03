@@ -38,6 +38,8 @@ def show(article_id, article_slug):
     # Get user saved words if logged in
     if current_user.is_authenticated:
         wbq = WordBank.query.with_entities(WordBank.hr_word_id).filter_by(user_id=current_user.id).all()
+    else:
+        wbq = None
     if wbq:
         wb = [ w[0] for w in wbq ]
     article = {

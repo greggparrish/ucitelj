@@ -12,6 +12,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_uploads import UploadSet, IMAGES, configure_uploads
 from flask_user import current_user, login_required, UserManager, UserMixin, SQLAlchemyAdapter
 from flask_wtf.csrf import CSRFProtect
+from livereload import Server
 
 from config import Config
 
@@ -96,3 +97,7 @@ def load_user(user_id):
 def handle_needs_login():
     flash("You have to be logged in to access this page.")
     return redirect(url_for('feed.index', next=request.endpoint))
+
+@app.shell_context_processor
+def make_shell_context():
+    return dict(app=app, db=db, User=User)

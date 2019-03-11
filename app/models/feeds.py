@@ -1,16 +1,10 @@
-import re
 import requests
-import sys
-
 import feedparser
-import requests
-from requests.exceptions import ConnectionError
 import calendar
 from time import mktime
 from datetime import datetime
 from sqlalchemy.exc import IntegrityError
 from slugify import slugify
-from flask_login import login_required
 
 from app import db
 from app.models.articles import Article
@@ -41,10 +35,10 @@ class Feed(db.Model):
     subscriptions = db.relationship("Subscription", backref='feed')
 
     def country_choices(self):
-        return [ (c, c) for c in COUNTRY_CHOICES ]
+        return [(c, c) for c in COUNTRY_CHOICES]
 
     def type_choices(self):
-        return [ (c, c) for c in TYPE_CHOICES ]
+        return [(c, c) for c in TYPE_CHOICES]
 
     def __repr__(self):
         return '<Feed: {}>'.format(self.name)
@@ -55,9 +49,11 @@ class Feed(db.Model):
         Return: feed object
         '''
         try:
+            print(feed.rss)
             feed_response = requests.get(feed.rss, headers={'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'}, timeout=2)
         except Exception as e:
-          return False
+            print(e)
+            return False
         if feed_response.status_code == 200:
             posts = feedparser.parse(feed_response.content)
             for p in posts.entries:
@@ -67,13 +63,12 @@ class Feed(db.Model):
                 timestamp = calendar.timegm(p.published_parsed)
                 slug = "{}_{}_{}".format(feed.id, timestamp, slugify(title))
                 if date > feed.checked:
-                    new_text = Article(
-                            permalink=url,
-                            feed_id=feed.id,
-                            title=title,
-                            date=date,
-                            slug=slug
-                            )
+                    new_text = Article(permalink=url,
+                                       feed_id=feed.id,
+                                       title=title,
+                                       date=date,
+                                       slug=slug
+                                       )
                     try:
                         db.session.add(new_text)
                         db.session.commit()
@@ -83,5 +78,3 @@ class Feed(db.Model):
             feed.checked = datetime.now()
             db.session.commit()
             return feed
-
-

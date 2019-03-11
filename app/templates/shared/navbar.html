@@ -1,34 +1,21 @@
-<nav class="navbar navbar-default navbar-static-top">
-	<div class="container">
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" href="/">Učitelj</a>
-      </div>
-		<div id="navbar" class="navbar-collapse collapse">
-			<ul class="nav navbar-nav">
-				<li><a href="{{ url_for('feeds.index') }}">feeds</a></li>
-				<li><a href="{{ url_for('articles.index') }}">articles</a></li>
-				<li><a href="{{ url_for('grammar.index') }}">grammar</a></li>
-				<li><a href="{{ url_for('words.dictionary') }}">dictionary</a></li>
-        {% if current_user.is_authenticated %}
-          {% if current_user.has_role('admin') %}
-            <li><a href="{{ url_for('admin.index') }}">admin</a></li>
+<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+  <a class="navbar-brand" href="/">Učitelj</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-          {% endif %}
-          <li><a href="{{ url_for('users.profile') }}">{{ current_user.username }}</a></li>
-          <li><a href="{{ url_for('users.logout') }}">logout</a></li>
-        {% else %}
-          <li><a href="{{ url_for('users.login')  }}">login</a></li>
-          <li><a href="{{ url_for('users.register')  }}">register</a></li>
-        {% endif %}
-			</ul>
-		</div><!--/.nav-collapse -->
-	</div>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item"><a class="nav-link" href="{{ url_for('feeds.index') }}">feeds</a></li>
+      <li class="nav-item"><a class="nav-link" href="{{ url_for('articles.index') }}">articles</a></li>
+      <li class="nav-item"><a class="nav-link" href="{{ url_for('grammar.index') }}">grammar</a></li>
+      <li class="nav-item"><a class="nav-link" href="{{ url_for('words.dictionary') }}">dictionary</a></li>
+      {% if current_user.is_authenticated %}
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('users.profile') }}">{{ current_user.username }}</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('users.logout') }}">logout</a></li>
+      {% else %}
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('users.login')  }}">login</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('users.register')  }}">register</a></li>
+      {% endif %}
+  </div>
 </nav>
-
-

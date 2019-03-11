@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed, FileRequired
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, RadioField, TextAreaField
-from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, URL
+from wtforms import StringField, SubmitField, RadioField, TextAreaField
+from wtforms.validators import DataRequired, URL
 
 from app import images
 from app.models.feeds import Feed
@@ -17,4 +17,3 @@ class FeedForm(FlaskForm):
     feed_type = RadioField(choices=Feed().type_choices())
     about = TextAreaField('About')
     submit = SubmitField('Submit')
-

@@ -1,10 +1,11 @@
 from app import db
-from app.models.words import PRONOUNS, GENDERS, VERB_TENSES
+from app.models.words import GENDERS
 
 
 # Cleaned word models b/c dictionary db is still a mess
 
 GENDER_CHOICES = tuple(GENDERS)
+
 
 class WordCase(db.Model):
     '''
@@ -15,6 +16,7 @@ class WordCase(db.Model):
     name = db.Column(db.String(), unique=True, nullable=False)
     table = db.Column(db.Text(), nullable=True)
     body = db.Column(db.Text(), nullable=True)
+
     def __repr__(self):
         return f'<Case: {self.name}>'
 
@@ -34,6 +36,7 @@ class Verb(db.Model):
     def __repr__(self):
         return f'<Verb: {self.hr_term} > {self.en_term}>'
 
+
 class Noun(db.Model):
     '''
     hr_term, en_term, gender, plural, animate
@@ -49,6 +52,7 @@ class Noun(db.Model):
     def __repr__(self):
         return f'<Noun: {self.hr_term} > {self.en_term}>'
 
+
 class Adjective(db.Model):
     '''
     hr_term, en_term
@@ -61,6 +65,7 @@ class Adjective(db.Model):
     def __repr__(self):
         return f'<Adjective: {self.hr_term} > {self.en_term}>'
 
+
 class Adverb(db.Model):
     '''
     hr_term, en_term
@@ -72,6 +77,7 @@ class Adverb(db.Model):
 
     def __repr__(self):
         return f'<adverb: {self.hr_term} > {self.en_term}>'
+
 
 class Preposition(db.Model):
     '''

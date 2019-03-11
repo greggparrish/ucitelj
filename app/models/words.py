@@ -1,16 +1,17 @@
 from sqlalchemy.sql.expression import func
 from app import db
 
-from app.models.articles import Article, ArticleText
+from app.models.articles import ArticleText
 from app.utils.stemmer import create_wordlist
 from app.utils.glossary import write_json_glossary
 
-PRON_CODES = ['1S','2S','3SM','3SF','3SN','1P','2P','3PM','3PF','3PN']
-PRON_WORDS = ['ja','ti','on','ona','ono','mi','vi','oni','one','ona']
-PRONOUNS = [ {'code':c, 'word':w} for c,w in zip(PRON_CODES,PRON_WORDS) ]
-GENDERS = ['M','F','N']
+PRON_CODES = ['1S', '2S', '3SM', '3SF', '3SN', '1P', '2P', '3PM', '3PF', '3PN']
+PRON_WORDS = ['ja', 'ti', 'on', 'ona', 'ono', 'mi', 'vi', 'oni', 'one', 'ona']
+PRONOUNS = [{'code': c, 'word': w} for c, w in zip(PRON_CODES, PRON_WORDS)]
+GENDERS = ['M', 'F', 'N']
 
-VERB_TENSES = ['present','past', 'future', 'conditional', 'imperative']
+VERB_TENSES = ['present', 'past', 'future', 'conditional', 'imperative']
+
 
 class WordRole(db.Model):
     '''
@@ -30,7 +31,7 @@ class Definition(db.Model):
     M2M rel b/w en & hr words, plus role, plural, notes, gender
     '''
     __tablename__ = 'definitions'
-    __table_args__ = (db.UniqueConstraint('hr_word_id','en_word_id', 'role_id', name='hr_en_uniq'),)
+    __table_args__ = (db.UniqueConstraint('hr_word_id', 'en_word_id', 'role_id', name='hr_en_uniq'),)
 
     id = db.Column(db.Integer, primary_key=True)
     hr_word_id = db.Column(db.Integer, db.ForeignKey('hr_words.id', ondelete='CASCADE'), nullable=False)
@@ -45,18 +46,17 @@ class Definition(db.Model):
         return '{}: {}'.format(self.hr_words.term, self.en_words.term)
 
     def en_hr_to_json(self):
-        return dict(
-                def_id=self.hr_word_id,
-                value=self.en_words.term,
-                label="{} : {}".format(self.en_words.term, self.hr_words.term)
-                )
+        return dict(def_id=self.hr_word_id,
+                    value=self.en_words.term,
+                    label="{} : {}".format(self.en_words.term, self.hr_words.term)
+                    )
 
     def hr_en_to_json(self):
-        return dict(
-                def_id=self.hr_word_id,
-                value=self.hr_words.term,
-                label="{} : {}".format(self.hr_words.term, self.en_words.term)
-                )
+        return dict(def_id=self.hr_word_id,
+                    value=self.hr_words.term,
+                    label="{} : {}".format(self.hr_words.term, self.en_words.term)
+                    )
+
 
 class HrWord(db.Model):
     '''
@@ -115,14 +115,13 @@ def create_glossary(a_id, article_text):
                     paralist.append(w)
 
         para_all = format_glossary(paralist)
-        glossary.append({
-            'paragraph' : paracount,
-            'definitions' : [para_all]
-            })
+        glossary.append({'paragraph': paracount,
+                         'definitions': [para_all]
+                         })
         paracount += 1
     jg = write_json_glossary(a_id, glossary)
     if jg:
-        at = ArticleText.query.filter(ArticleText.article_id==a_id).first()
+        at = ArticleText.query.filter(ArticleText.article_id == a_id).first()
         at.has_dict = True
         db.session.commit()
     return jg
@@ -135,15 +134,14 @@ def format_glossary(wbl):
     ex: [{'def_id': 16300, 'hr_word': 'stanje', 'en_words': ['state', 'condition']}, ...]
     '''
     wb = []
-    hrs = set([ w.hr_words.term for w in wbl ])
+    hrs = set([w.hr_words.term for w in wbl])
     for hr in hrs:
-        def_group=[]
-        ens = set([ wd.en_words.term for wd in wbl if wd.hr_words.term == hr ])
-        word_id = [ wd.hr_words.id for wd in wbl if wd.hr_words.term == hr ]
-        def_group = {
-            'def_id' : word_id[0],
-            'hr_word' : hr,
-            'en_words' : [ w for w in ens ]
-            }
+        def_group = []
+        ens = set([wd.en_words.term for wd in wbl if wd.hr_words.term == hr])
+        word_id = [wd.hr_words.id for wd in wbl if wd.hr_words.term == hr]
+        def_group = {'def_id': word_id[0],
+                     'hr_word': hr,
+                     'en_words': [w for w in ens]
+                     }
         wb.append(def_group)
     return wb

@@ -1,14 +1,15 @@
 from sqlalchemy.orm import subqueryload
-from flask import Blueprint, flash, render_template, redirect, url_for, request, jsonify
+from flask import Blueprint, flash, render_template, redirect, url_for, request
 from flask_login import login_user, logout_user, current_user, login_required
 
 from app import db
-from app.models.users import User, Role, UserRoles, Subscription, WordBank
+from app.models.users import User, Subscription, WordBank
 from app.forms.users import LoginForm, RegistrationForm
 from app.models.words import Definition, format_glossary
 
 
 user_bp = Blueprint('users', __name__)
+
 
 @user_bp.route('/login', methods=['GET', 'POST'])
 def login():
@@ -27,6 +28,7 @@ def login():
         return redirect(next_page)
     return render_template('users/login.html', title='Log In', form=form)
 
+
 @user_bp.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
@@ -41,6 +43,7 @@ def register():
         return redirect(url_for('feeds.index'))
     return render_template('users/register.html', title='Register', form=form)
 
+
 @user_bp.route('/profile')
 @login_required
 def profile():
@@ -50,12 +53,12 @@ def profile():
     wbl = Definition.query.options(subqueryload(Definition.hr_words)).filter(Definition.hr_word_id.in_(wbq)).all()
     wb = format_glossary(wbl)
     wbs = sorted(wb, key=lambda k: k['hr_word'])
-    profile ={
-            'user': user,
-            'subs':subs,
-            'wb':wbs
-            }
+    profile = {'user': user,
+               'subs': subs,
+               'wb': wbs
+               }
     return render_template('users/profile.html', profile=profile)
+
 
 @user_bp.route('/logout')
 @login_required

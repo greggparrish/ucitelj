@@ -4,14 +4,14 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>{% block title %}{% endblock %}Učitelj</title>
+    <title>{% block title %}{% endblock %}Učitelj</title>
     <link href="{{ url_for('static', filename='public/css/bootstrap.min.css') }}" rel="stylesheet">
-		{% assets "css_all" %}
+    {% assets "css_all" %}
       <!--
           <link href="https://fonts.googleapis.com/css?family=PT+Mono|PT+Sans&amp;subset=cyrillic-ext,latin-ext" rel="stylesheet">
       //-->
       <link rel="stylesheet" href="{{ ASSET_URL }}" type="text/css" />
-		{% endassets %}
+    {% endassets %}
     {% block extra_css %}{% endblock %}
   </head>
   <body>
@@ -27,16 +27,16 @@
             {% endfor %}
           </ul>
         {% endif %}
-      {% endwith %} 
+      {% endwith %}
       {% block content %}{% endblock %}
     </div>
       {% include "shared/footer.html" %}
-		{% assets "js_all" %}
-				<script type="text/javascript" src="{{ url_for('static', filename='public/js/jquery-3.2.1.min.js') }}"></script>
-				<script type="text/javascript" src="{{ url_for('static', filename='public/js/jquery-ui.min.js') }}"></script>
-				<script type="text/javascript" src="{{ ASSET_URL }}"></script>
-				<script type="text/javascript" src="{{ url_for('static', filename='public/js/bootstrap.min.js') }}"></script>
-		{% endassets %}
+    {% assets "js_all" %}
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script type="text/javascript" src="//code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='public/js/bootstrap.min.js') }}"></script>
+    {% endassets %}
     {% block extra_js %}{% endblock %}
   </body>
 </html>

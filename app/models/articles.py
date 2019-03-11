@@ -2,7 +2,6 @@ import re
 import requests
 
 from bs4 import BeautifulSoup
-from slugify import slugify
 
 from app import db
 
@@ -42,14 +41,13 @@ class ArticleText(db.Model):
         Return: article text string as at
         '''
         try:
-          r = requests.get(article.permalink, timeout=2)
+            r = requests.get(article.permalink, timeout=2)
         except Exception as e:
-          return False
+            return False
         if r:
             soup = BeautifulSoup(r.content, 'lxml')
             at = ''
             e, n = re.split('\.|#', article.feed.body_tag)
-            s = '#' if '#' in article.feed.body_tag else '.'
             if '#' in article.feed.body_tag:
                 bt = soup.find(e, id=n)
             else:
@@ -60,10 +58,7 @@ class ArticleText(db.Model):
                     for p in ps:
                         if p.text and p.text != '</p>' and '[CDATA' not in p.text:
                             at += "<p>{}</p>".format(p.text.strip())
-                    new_text = ArticleText(
-                            article_id=article.id,
-                            text=at
-                            )
+                    new_text = ArticleText(article_id=article.id, text=at)
                     db.session.add(new_text)
                     db.session.commit()
                 else:
